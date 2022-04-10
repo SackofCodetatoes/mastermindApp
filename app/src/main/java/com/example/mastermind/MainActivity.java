@@ -9,6 +9,13 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,15 +23,36 @@ public class MainActivity extends AppCompatActivity {
     private String[] pickerVals;
     private Button tryButton;
     private TextView textDisplay;
+    private RequestQueue queue;
+    String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         interfaceInit();
+        queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                textDisplay.setText("Response is: " + response.substring(0,8));
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                textDisplay.setText("uh oh");
+            }
+        });
+        queue.add(stringRequest);
 
+//        textDisplay.setText(("init"));
     }
 
+
+    void generateSecretCode(){
+
+    }
 
     void interfaceInit(){
         pickerVals = new String[] {"0", "1", "2", "3", "4", "5", "6", "7"};
@@ -47,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         textDisplay = findViewById(R.id.text_main_display);
         textDisplay.setText(("Hello World!"));
-
 
         tryButton = findViewById(R.id.button_main_clicker);
         tryButton.setOnClickListener(new View.OnClickListener(){
