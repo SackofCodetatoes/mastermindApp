@@ -22,23 +22,36 @@ public class MainActivity extends AppCompatActivity {
     private NumberPicker picker1, picker2, picker3, picker4;
     private String[] pickerVals;
     private Button tryButton;
-    private TextView textDisplay;
+    private TextView textDisplay, attemptsDisplay;
     private RequestQueue queue;
     private int[] secretCode = {1, 2, 3, 4};
     private String responseString;
+    int attempts = 10, correctDigits = 0, correctPositions = 0, currentInt;
+    private boolean[] secretNums = new boolean[8];
     String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initializeGame();
         interfaceInit();
-        generateSecretCode();
 
     }
 
+    void initializeGame(){
+        attempts = 10;
+        for(int i = 0; i < secretNums.length; i++) {
+            secretNums[i] = false;
+        }
+        generateSecretCode();
+        for(int i = 0; i < 4; i++){
+            secretNums[secretCode[i]] = true;
+        }
 
-    void generateSecretCode(){
+    }
+
+    private void generateSecretCode(){
         queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -49,16 +62,17 @@ public class MainActivity extends AppCompatActivity {
                         for(int i = 0; i < responseString.length(); i++){
                             secretCode[i] = Character.getNumericValue((responseString.charAt(i)));
                         }
-                        textDisplay.setText("All gud");
+                        textDisplay.setText("Game is ready to go!");
                     }
                 }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                textDisplay.setText("uh oh");
+                textDisplay.setText("Something went wrong with code generation :(");
             }
         });
         queue.add(stringRequest);
     }
+
 
     void interfaceInit(){
         pickerVals = new String[] {"0", "1", "2", "3", "4", "5", "6", "7"};
@@ -82,13 +96,42 @@ public class MainActivity extends AppCompatActivity {
         textDisplay = findViewById(R.id.text_main_display);
         textDisplay.setText(("Hello World!"));
 
+        attemptsDisplay = findViewById(R.id.text_main_attempts);
+        attemptsDisplay.setText("Attempts Remaining: " + attempts);
+
         tryButton = findViewById(R.id.button_main_clicker);
         tryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                int valuePicker1 = picker1.getValue(), valuePicker2 = picker2.getValue(), valuePicker3 = picker3.getValue(), valuePicker4 = picker4.getValue();
-                String pickerCode = "" + valuePicker1 + valuePicker2 + valuePicker3 + valuePicker4;
-                Log.d("code is :", pickerCode);
-                textDisplay.setText((pickerCode));
+                int userInput[] = {picker1.getValue(), picker2.getValue(), picker3.getValue(), picker4.getValue()};
+//                int valuePicker1 = picker1.getValue(), valuePicker2 = picker2.getValue(), valuePicker3 = picker3.getValue(), valuePicker4 = picker4.getValue();
+//                String pickerCode = "" + valuePicker1 + valuePicker2 + valuePicker3 + valuePicker4;
+                //game logic here
+                correctDigits = 0;
+                correctPositions = 0;
+                //check code
+                for(int i = 0; i < 4; i++){
+                    if(userInput[i] == secretCode[i]){
+                        correctPositions+=1;
+                    }
+                    if(secretNums[userInput[i]]){
+                        correctDigits+=1;
+                    }
+                }
+
+                if(correctPositions == 4) {
+                    textDisplay.setText("You won! pls program reset");
+                } else if(correctPositions > 0){
+                    textDisplay.setText("Player guessed a correct number. Try again");
+                } else {
+                    textDisplay.setText("No correct guesses. Try again");
+                }
+
+                attempts-=1;
+                attemptsDisplay.setText("Attempts Remaining: " + attempts);
+
+                if(attempts == 0){
+                    textDisplay.setText("Gameover, secret code was " + secretCode[0]+ secretCode[1]+ secretCode[2]+ secretCode[3]+". pls reset game");
+                }
 
             }});
 
