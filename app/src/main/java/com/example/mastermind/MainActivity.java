@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private Button tryButton;
     private TextView textDisplay;
     private RequestQueue queue;
+    private int[] secretCode = {1, 2, 3, 4};
+    private String responseString;
     String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
     @Override
 
@@ -31,27 +33,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         interfaceInit();
+        generateSecretCode();
+
+    }
+
+
+    void generateSecretCode(){
         queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                textDisplay.setText("Response is: " + response.substring(0,8));
-            }
-        }, new Response.ErrorListener(){
+                    @Override
+                    public void onResponse(String response) {
+                        responseString = response.substring(0, 8);
+                        responseString = responseString.replaceAll("[^0-7]", "");
+                        for(int i = 0; i < responseString.length(); i++){
+                            secretCode[i] = Character.getNumericValue((responseString.charAt(i)));
+                        }
+                        textDisplay.setText("All gud");
+                    }
+                }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
                 textDisplay.setText("uh oh");
             }
         });
         queue.add(stringRequest);
-
-//        textDisplay.setText(("init"));
-    }
-
-
-    void generateSecretCode(){
-
     }
 
     void interfaceInit(){
