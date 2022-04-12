@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         interfaceInit();
         initializeGame();
 
-        tryButton = findViewById(R.id.button_main_clicker);
         tryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 checkCode();
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         recordedAttempts.setLength(0);
         textRecord.setText("");
         attemptsDisplay.setText("Attempts Remaining: "+ attempts);
+        tryButton.setText("Try Code");
     }
 
     void checkCode(){
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 textDisplay.setText("Gameover, secret code was " + secretCode[0]+ secretCode[1]+ secretCode[2]+ secretCode[3]+". pls reset game");
                 gameOver = true;
                 //set button text to restart
+                tryButton.setText("Restart Game");
             };
         }
     }
@@ -149,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
         textRecord = findViewById(R.id.text_main_record);
         attemptsDisplay = findViewById(R.id.text_main_attempts);
 //        attemptsDisplay.setText("Attempts Remaining: " + attempts);
+        tryButton = findViewById(R.id.button_main_clicker);
+
 
     }
     private void generateSecretCode(){

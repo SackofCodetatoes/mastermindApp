@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">mastermind</string>
+    <string name="app_name">MasterMind</string>
+<!--    <string name="button_test">Test</string>-->
 </resources>
