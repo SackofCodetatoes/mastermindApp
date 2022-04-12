@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
         recordedAttempts.setLength(0);
 
+
     }
 
     private void generateSecretCode(){

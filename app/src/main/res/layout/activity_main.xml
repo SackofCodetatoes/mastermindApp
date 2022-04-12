@@ -15,7 +15,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numberpicker_main_picker2"
-        tools:text="Test" />
+        android:text="Test"
+        />
 
     <NumberPicker
         android:id="@+id/numberpicker_main_picker4"
