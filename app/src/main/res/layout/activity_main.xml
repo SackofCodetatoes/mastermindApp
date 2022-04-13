@@ -9,16 +9,54 @@
     tools:layout_editor_absoluteY="-195dp">
 
     <Button
+        android:id="@+id/button_main_easy"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#47c984"
+
+        android:text="Easy"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_medium"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberpicker_main_picker" />
+
+    <Button
+        android:id="@+id/button_main_medium"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#d1b430"
+        android:text="Medium"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_hard"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_easy"
+        app:layout_constraintTop_toBottomOf="@+id/numberpicker_main_picker2" />
+
+    <Button
         android:id="@+id/button_main_clicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:enabled="false"
         android:text="Try Code"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numberpicker_main_picker2" />
+
+    <Button
+        android:id="@+id/button_main_hard"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#fc431e"
+        android:text="Hard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_medium"
+        app:layout_constraintTop_toBottomOf="@+id/numberpicker_main_picker4" />
 
     <NumberPicker
         android:id="@+id/numberpicker_main_picker4"

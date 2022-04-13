@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void initializeGame(){
+        //change buttons to difficulty setting
+        //on click and setting of difficulty, the function will hide difficulty buttons and show the try code button
+
+
         gameOver = false;
         attempts = 10;
         for(int i = 0; i < secretNums.length; i++) {
@@ -74,20 +78,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void colorNumberPicker(int colorState, NumberPicker picker){
-        // colorstate replaced with difficulty, w
-        switch(colorState){
-            case 0:
-                picker.setBackgroundColor(Color.TRANSPARENT);//reset picker color
-                break;
-            case 1:
-                picker.setBackgroundColor(Color.rgb(88,196,99)); // correct num and pos
-                break;
-            case 2:
-                picker.setBackgroundColor(Color.rgb(207, 158, 68)); //correct num
-                break;
+    void colorNumberPickers(int[] userInputResponse){
+        // color state replaced with difficulty, w
+        //clear all color before coloring
+        for(int i = 0; i < numberPickers.length; i++) {
+            numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
         }
 
+        switch(difficulty){
+            case 0:
+                //if easy mode, color all userinput responses accordingly
+                //color wheel based on userResponse with multis
+                break;
+            case 1:
+                //medium - color correct nums
+                //color wheel based on userInputResponse;
+
+                break;
+            case 2:
+                //color whole combination to indicate response
+                if(correctPositions > 0){
+                    //color whole wheel in green
+                }
+                else if(correctDigits > 0){
+                    //color whole wheel in orange
+                }
+                break;
+        }
     }
 
     void checkCode(){
@@ -104,14 +121,14 @@ public class MainActivity extends AppCompatActivity {
 
             for(int i = 0; i < userInput.length; i++){
                 userInput[i] = numberPickers[i].getValue();
-                colorNumberPicker(0, numberPickers[i]);
+//                colorNumberPickers(0, numberPickers[i]);
             }
 
             //check code
             for(int i = 0; i < 4; i++){
                 if(userInput[i] == secretCode[i]){
                     correctPositions+=1;
-                    colorNumberPicker(1,numberPickers[i]);//if hint mode is x, d that
+//                    colorNumberPickers(1,numberPickers[i]);//if hint mode is x, d that
                 }
                 if(secretNums[userInput[i]] > 0){
                     correctDigits+=1;
@@ -147,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
             if(attempts <= 0){
                 textDisplay.setText("Gameover. Secret code was " + secretCode[0]+ secretCode[1]+ secretCode[2]+ secretCode[3]+".");
                 gameOver = true;
-                //set button text to restart
                 tryButton.setText("Restart Game");
             };
         }

@@ -6,16 +6,18 @@ Wednesday Goals
         - medium: hl correct digits with green and correct nums with orange
         - hard: highlight all pickers with the responses from directions. green if num is right pos, orange if correct num but not spot, blank for no correct
 
-        main will have difficult setting. cick button -> set the difficulty rating
+        main will have difficult setting. click button -> set the difficulty rating
         create an array of numbers to indicate the reading output when checking code
         - [0,0,0,0]
         - 0 indicates incorrect
         - 1 indicates value is in the code
         - 2 indicates value is in the correct pos
         colorNumberPicker will respond to request accordingly depending on difficulty
-        - if diff 1, color individual pickrs based on result
+        - if diff 1, color individual pickers based on result
         - if 2, color whole wheel as a response
         - if 0, color individual wheels with additional color of multiples
+
+        - simplify the attempts record with colors based on difficulty
 
 - shift UI around to be more user friendly
 
@@ -26,3 +28,5 @@ Wednesday Goals
 
 Thursday
 - remove debugging messages
+- refactor and cleanup any messy code
+- test and get feedback
