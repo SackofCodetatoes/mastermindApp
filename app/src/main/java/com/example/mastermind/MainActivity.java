@@ -2,6 +2,7 @@ package com.example.mastermind;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -64,11 +65,28 @@ public class MainActivity extends AppCompatActivity {
         //reset pickers
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setValue(0);
+            numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
         }
         recordedAttempts.setLength(0);
         textRecord.setText("");
         attemptsDisplay.setText("Attempts Remaining: "+ attempts);
         tryButton.setText("Try Code");
+
+    }
+    void colorNumberPicker(int colorState, NumberPicker picker){
+        switch(colorState){
+            case 0:
+                picker.setBackgroundColor(Color.TRANSPARENT);
+                break;
+            case 1:
+                picker.setBackgroundColor(Color.rgb(88,196,99)); // correct num and pos
+                break;
+            case 2:
+                picker.setBackgroundColor(Color.rgb(207, 158, 68)); //correct num
+                break;
+        }
+
+
 
     }
 
@@ -86,12 +104,14 @@ public class MainActivity extends AppCompatActivity {
 
             for(int i = 0; i < userInput.length; i++){
                 userInput[i] = numberPickers[i].getValue();
+                colorNumberPicker(0, numberPickers[i]);
             }
 
             //check code
             for(int i = 0; i < 4; i++){
                 if(userInput[i] == secretCode[i]){
                     correctPositions+=1;
+                    colorNumberPicker(1,numberPickers[i]);//if hint mode is x, d that
                 }
                 if(secretNums[userInput[i]]){
                     correctDigits+=1;
