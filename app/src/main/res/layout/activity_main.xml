@@ -62,42 +62,42 @@
         android:id="@+id/numberpicker_main_picker4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="175dp"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/numberpicker_main_picker3"
-        app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <NumberPicker
         android:id="@+id/numberpicker_main_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="175dp"
         app:layout_constraintEnd_toStartOf="@+id/numberpicker_main_picker2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <NumberPicker
         android:id="@+id/numberpicker_main_picker2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="175dp"
         app:layout_constraintEnd_toStartOf="@+id/numberpicker_main_picker3"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/numberpicker_main_picker"
-        app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <NumberPicker
         android:id="@+id/numberpicker_main_picker3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="175dp"
         app:layout_constraintEnd_toStartOf="@+id/numberpicker_main_picker4"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/numberpicker_main_picker2"
-        app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollview_main_record"

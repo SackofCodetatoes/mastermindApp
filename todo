@@ -1,9 +1,9 @@
 Wednesday Goals
 - add difficulty setting
     x add difficulty buttons
-    - implement button clicks to set difficulty
-    - disable and hide buttons after buttons have been clicked
-    - re-enable after and show buttons after game restart has been clicked
+    x implement button clicks to set difficulty
+    x disable and hide buttons after buttons have been clicked
+    x re-enable after and show buttons after game restart has been clicked
     - (optional) add restart in same difficulty if possible
     - worry about mutli click from difficulty settings
 
@@ -25,7 +25,8 @@ Wednesday Goals
         - if 0, color individual wheels with additional color of multiples
 
         - simplify the attempts record with colors based on difficulty
-
+        - reveal only as many letters as there is, wordle example
+        - go through priority (colorize correct position and number first before secondary colorization) (PRIORITY)
 
 
 - shift UI around to be more user friendly

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Button tryButton, easyButton, mediumButton, hardButton;
     private TextView textDisplay, attemptsDisplay, textRecord;
     private RequestQueue queue;
-    private int[] secretCode = {1, 2, 3, 4}, userInput = {0, 0 ,0 ,0}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] secretCode = {1, 2, 3, 4}, userInput = {0, 0 ,0 ,0}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0}, correctInputs = {0, 0, 0, 0};
     private String responseString, result;
     StringBuilder recordedAttempts = new StringBuilder(500);
     int attempts = 10, correctDigits = 0, correctPositions = 0, difficulty = 0;
@@ -133,34 +133,70 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void colorNumberPickers(int[] userInputResponse){
+    void colorNumberPickers(int[] correctInputs){
         // color state replaced with difficulty, w
         //clear all color before coloring
+        int [] correctMultiples = secretNums.clone();
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
         }
 
+
+        //color number pickers based on difficulty
         switch(difficulty){
             case 0:
                 //if easy mode, color all userinput responses accordingly
                 //color wheel based on userResponse with multis
+                for(int i = 0; i < correctInputs.length; i++) {
+                    switch(correctInputs[i]){
+                        case 1:
+                            numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+                            break;
+                        case 2:
+                            numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
+                            break;
+                        case 3:
+                            numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
+                            break;
+                    }
+                }
                 break;
             case 1:
                 //medium - color correct nums
                 //color wheel based on userInputResponse;
+                for(int i = 0; i < correctInputs.length; i++) {
+                    switch(correctInputs[i]){
+                        case 1:
+                            numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+                            break;
+                        case 2: case 3:
+                            if(correctMultiples[userInput[i]] > 0){
+                                numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
+                                correctMultiples[userInput[i]] -= 1;
+                            }
+                            break;
+                    }
 
+                }
                 break;
             case 2:
                 //color whole combination to indicate response
                 if(correctPositions > 0){
                     //color whole wheel in green
+                    for(int i = 0; i < numberPickers.length; i++) {
+                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+                    }
                 }
                 else if(correctDigits > 0){
-                    //color whole wheel in orange
+                    //color whole wheel in orange209, 180, 48
+                    for(int i = 0; i < numberPickers.length; i++) {
+                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
+                    }
                 }
                 break;
         }
     }
+
 
     void checkCode(){
         if(gameOver){
@@ -169,25 +205,36 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             //can place pickers in an array to build on extension
-            correctPositions = 0;
+            correctPositions = 0;  //reset counter values
             correctDigits = 0;
+            for(int i = 0; i < userInput.length; i++){
+                correctInputs[i] = 0;
+            }
 
+            //setup array as userinput from number pickers
             for(int i = 0; i < userInput.length; i++){
                 userInput[i] = numberPickers[i].getValue();
-//                colorNumberPickers(0, numberPickers[i]);
             }
 
             //check code
             for(int i = 0; i < 4; i++){
                 if(userInput[i] == secretCode[i]){
                     correctPositions+=1;
-//                    colorNumberPickers(1,numberPickers[i]);//if hint mode is x, d that
+                    correctInputs[i] = 1;
                 }
-                if(secretNums[userInput[i]] > 0){
+                //9 = correct pos, > 0 will reduce
+                else if(secretNums[userInput[i]] > 0){
                     correctDigits+=1;
+                    if(secretNums[userInput[i]] > 1){
+                        correctInputs[i] = 2;
+                    }
+                    else {
+                        correctInputs[i] = 3;
+                    }
                 }
             }
-
+            //color nums,
+            colorNumberPickers(correctInputs);
             //result from checking code, can modify values to variables for extension
             if(correctPositions == 4) {
                 gameOver = true;
@@ -197,14 +244,14 @@ public class MainActivity extends AppCompatActivity {
                 //play sound?
             } else if(correctPositions > 0){
                 textDisplay.setText("Player guessed a correct number and position. Try again");
-                result = "one or more correct nums & pos";
+                result = " correct num & pos";
                 //color numberpickers based on correctness
             } else if(correctDigits > 0) {
                 textDisplay.setText("Player guessed a correct number. Try again");
-                result = "one or more correct nums";
+                result = " correct num";
             } else {
                 textDisplay.setText("No correct guesses. Try again");
-                result = "no correct nums";
+                result = " no correct nums";
 
             }
 
