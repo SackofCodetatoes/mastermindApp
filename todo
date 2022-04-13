@@ -6,7 +6,7 @@ Wednesday Goals
     - re-enable after and show buttons after game restart has been clicked
     - (optional) add restart in same difficulty if possible
 
-- complete hint system
+- complete hint system (connected with difficulty setting)
     - provide difficulty options at each restart and provide highlighted hints accordingly
         - easy: highlights correct digits with green, multiple correct nums with blue and single correct nums with orange
         - medium: hl correct digits with green and correct nums with orange
