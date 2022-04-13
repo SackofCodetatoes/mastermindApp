@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             textRecord.setText(recordedAttempts);
 //            }
             if(attempts <= 0){
-                textDisplay.setText("Gameover, secret code was " + secretCode[0]+ secretCode[1]+ secretCode[2]+ secretCode[3]+". pls reset game");
+                textDisplay.setText("Gameover. Secret code was " + secretCode[0]+ secretCode[1]+ secretCode[2]+ secretCode[3]+".");
                 gameOver = true;
                 //set button text to restart
                 tryButton.setText("Restart Game");
