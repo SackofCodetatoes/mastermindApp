@@ -23,7 +23,7 @@ import com.android.volley.toolbox.Volley;
 public class MainActivity extends AppCompatActivity {
     private NumberPicker picker1, picker2, picker3, picker4;
     private String[] pickerVals;
-    private Button tryButton;
+    private Button tryButton, easyButton, mediumButton, hardButton;
     private TextView textDisplay, attemptsDisplay, textRecord;
     private RequestQueue queue;
     private int[] secretCode = {1, 2, 3, 4}, userInput = {0, 0 ,0 ,0}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0};
@@ -45,20 +45,75 @@ public class MainActivity extends AppCompatActivity {
         );
 
         interfaceInit();
-        initializeGame();
+        initButtons();
+//        initializeGame();
+
+
+
+    }
+    void toggleButtons(int onOff){
+        if(onOff == 0){
+            easyButton.setVisibility(View.INVISIBLE);
+            mediumButton.setVisibility(View.INVISIBLE);
+            hardButton.setVisibility(View.INVISIBLE);
+            easyButton.setEnabled(false);
+            mediumButton.setEnabled(false);
+            hardButton.setEnabled(false);
+            tryButton.setVisibility(View.VISIBLE);
+        }
+        else if(onOff == 1){
+            easyButton.setVisibility(View.VISIBLE);
+            mediumButton.setVisibility(View.VISIBLE);
+            hardButton.setVisibility(View.VISIBLE);
+            easyButton.setEnabled(true);
+            mediumButton.setEnabled(true);
+            hardButton.setEnabled(true);
+            tryButton.setVisibility(View.INVISIBLE);
+        }
+    }
+    void initButtons(){
+        tryButton = findViewById(R.id.button_main_clicker);
+        easyButton = findViewById(R.id.button_main_easy);
+        mediumButton = findViewById(R.id.button_main_medium);
+        hardButton = findViewById(R.id.button_main_hard);
 
         tryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 checkCode();
             }
         });
-    }
+        easyButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 0;
+                toggleButtons(0);
+                initializeGame();
+            }
+        });
+        mediumButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 1;
+                toggleButtons(0);
+                initializeGame();
+            }
+        });
+        hardButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 2;
+                toggleButtons(0);
+                initializeGame();
+            }
+        });
 
+
+    }
     void initializeGame(){
         //change buttons to difficulty setting
         //on click and setting of difficulty, the function will hide difficulty buttons and show the try code button
-
-
+        tryButton.setEnabled(false);
+        textDisplay.setText("Generating secret code...");
         gameOver = false;
         attempts = 10;
         for(int i = 0; i < secretNums.length; i++) {
@@ -110,9 +165,7 @@ public class MainActivity extends AppCompatActivity {
     void checkCode(){
         if(gameOver){
             //Reset game variables and UI
-            tryButton.setEnabled(false);
-            textDisplay.setText("Generating secret code...");
-            initializeGame();
+            toggleButtons(1);
         }
         else {
             //can place pickers in an array to build on extension
@@ -160,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             //print simpler method of hints?
             recordedAttempts.insert(0,"" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
             textRecord.setText(recordedAttempts);
-//            }
+
             if(attempts <= 0){
                 textDisplay.setText("Gameover. Secret code was " + secretCode[0]+ secretCode[1]+ secretCode[2]+ secretCode[3]+".");
                 gameOver = true;
@@ -192,14 +245,10 @@ public class MainActivity extends AppCompatActivity {
             numberPickers[i].setDisplayedValues(pickerVals);
         }
 
-
         textDisplay = findViewById(R.id.text_main_display);
         textDisplay.setText(("Guess a 4 digit combination"));
         textRecord = findViewById(R.id.text_main_record);
         attemptsDisplay = findViewById(R.id.text_main_attempts);
-
-        tryButton = findViewById(R.id.button_main_clicker);
-
 
     }
     private void generateSecretCode(){

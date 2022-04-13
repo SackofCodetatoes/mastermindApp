@@ -5,6 +5,7 @@ Wednesday Goals
     - disable and hide buttons after buttons have been clicked
     - re-enable after and show buttons after game restart has been clicked
     - (optional) add restart in same difficulty if possible
+    - worry about mutli click from difficulty settings
 
 - complete hint system (connected with difficulty setting)
     - provide difficulty options at each restart and provide highlighted hints accordingly
