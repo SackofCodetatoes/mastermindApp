@@ -3,6 +3,7 @@ package com.example.mastermind;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     int attempts = 10, correctDigits = 0, correctPositions = 0;
     private boolean gameOver = false;
     private boolean[] secretNums = new boolean[8];
-
+    NumberPicker[] numberPickers = new NumberPicker[4];
 
     String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
     @Override
@@ -59,33 +60,35 @@ public class MainActivity extends AppCompatActivity {
             secretNums[i] = false;
         }
         generateSecretCode();
-        //in secretcode, disable test button
-        for(int i = 0; i < 4; i++){
-            secretNums[secretCode[i]] = true;
+
+        //reset pickers
+        for(int i = 0; i < numberPickers.length; i++) {
+            numberPickers[i].setValue(0);
         }
         recordedAttempts.setLength(0);
         textRecord.setText("");
         attemptsDisplay.setText("Attempts Remaining: "+ attempts);
         tryButton.setText("Try Code");
+
     }
 
     void checkCode(){
         if(gameOver){
             //Reset game variables and UI
+            tryButton.setEnabled(false);
+            textDisplay.setText("Generating secret code...");
             initializeGame();
         }
         else {
             //can place pickers in an array to build on extension
-            userInput[0] = picker1.getValue();
-            userInput[1] = picker2.getValue();
-            userInput[2] = picker3.getValue();
-            userInput[3] = picker4.getValue();
-
-            correctDigits = 0;
             correctPositions = 0;
+            correctDigits = 0;
+
+            for(int i = 0; i < userInput.length; i++){
+                userInput[i] = numberPickers[i].getValue();
+            }
 
             //check code
-//            if(attempts > 0){
             for(int i = 0; i < 4; i++){
                 if(userInput[i] == secretCode[i]){
                     correctPositions+=1;
@@ -94,10 +97,11 @@ public class MainActivity extends AppCompatActivity {
                     correctDigits+=1;
                 }
             }
+
             //result from checking code, can modify values to variables for extension
             if(correctPositions == 4) {
                 textDisplay.setText("You won! pls program reset");
-                //do stuff on win and set game to gaveover state
+                //do stuff on win and set game to gameover state
                 gameOver = true;
             } else if(correctPositions > 0){
                 textDisplay.setText("Player guessed a correct number and position. Try again");
@@ -122,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
                 tryButton.setText("Restart Game");
             };
         }
+        //debug
+        Log.d("userInput:", "" + userInput[0] + userInput[1] + userInput[2] + userInput[3]);
+        Log.d("secret code", "" + secretCode[0] + secretCode[1] + secretCode[2] + secretCode[3]);
+        Log.d("secret nums: ", ""+ secretNums[0] + " " + secretNums[1] + " "+ secretNums[2] + " "+ secretNums[3] + " "+ secretNums[4] + " "+ secretNums[5] + " "+ secretNums[6] + " "+ secretNums[7] + " ");
     }
 
 
@@ -129,21 +137,20 @@ public class MainActivity extends AppCompatActivity {
         //assigns interface values
         pickerVals = new String[] {"0", "1", "2", "3", "4", "5", "6", "7"};
         picker1 = findViewById(R.id.numberpicker_main_picker);
-        picker1.setMaxValue(7);
-        picker1.setMinValue(0);
         picker2 = findViewById(R.id.numberpicker_main_picker2);
-        picker2.setMaxValue(7);
-        picker2.setMinValue(0);
         picker3 = findViewById(R.id.numberpicker_main_picker3);
-        picker3.setMaxValue(7);
-        picker3.setMinValue(0);
         picker4 = findViewById(R.id.numberpicker_main_picker4);
-        picker4.setMaxValue(7);
-        picker4.setMinValue(0);
-        picker1.setDisplayedValues(pickerVals);
-        picker2.setDisplayedValues(pickerVals);
-        picker3.setDisplayedValues(pickerVals);
-        picker4.setDisplayedValues(pickerVals);
+        numberPickers[0] = picker1;
+        numberPickers[1] = picker2;
+        numberPickers[2] = picker3;
+        numberPickers[3] = picker4;
+
+        for(int i = 0; i < numberPickers.length; i++){
+            numberPickers[i].setMaxValue(7);
+            numberPickers[i].setMinValue(0);
+            numberPickers[i].setDisplayedValues(pickerVals);
+        }
+
 
         textDisplay = findViewById(R.id.text_main_display);
         textDisplay.setText(("Guess a 4 digit combination"));
@@ -166,6 +173,10 @@ public class MainActivity extends AppCompatActivity {
                             secretCode[i] = Character.getNumericValue((responseString.charAt(i)));
                         }
                         textDisplay.setText("Game is ready to go!");
+                        for(int i = 0; i < 4; i++){
+                            secretNums[secretCode[i]] = true;
+                        }
+                        tryButton.setEnabled(true);
                     }
                 }, new Response.ErrorListener(){
             @Override
