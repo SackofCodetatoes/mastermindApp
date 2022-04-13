@@ -100,12 +100,15 @@ public class MainActivity extends AppCompatActivity {
 
             //result from checking code, can modify values to variables for extension
             if(correctPositions == 4) {
+                gameOver = true;
                 textDisplay.setText("You won! pls program reset");
                 //do stuff on win and set game to gameover state
-                gameOver = true;
+                //run congradulations effect
+                //play sound?
             } else if(correctPositions > 0){
                 textDisplay.setText("Player guessed a correct number and position. Try again");
                 result = "one or more correct nums & pos";
+                //color numberpickers based on correctness
             } else if(correctDigits > 0) {
                 textDisplay.setText("Player guessed a correct number. Try again");
                 result = "one or more correct nums";
@@ -114,8 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 result = "no correct nums";
 
             }
+
             attempts-=1;
             attemptsDisplay.setText("Attempts Remaining: " + attempts);
+            //print simpler method of hints?
             recordedAttempts.insert(0,"" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
             textRecord.setText(recordedAttempts);
 //            }
@@ -156,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         textDisplay.setText(("Guess a 4 digit combination"));
         textRecord = findViewById(R.id.text_main_record);
         attemptsDisplay = findViewById(R.id.text_main_attempts);
-//        attemptsDisplay.setText("Attempts Remaining: " + attempts);
+
         tryButton = findViewById(R.id.button_main_clicker);
 
 
