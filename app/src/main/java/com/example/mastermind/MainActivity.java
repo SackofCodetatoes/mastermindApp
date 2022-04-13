@@ -26,12 +26,12 @@ public class MainActivity extends AppCompatActivity {
     private Button tryButton;
     private TextView textDisplay, attemptsDisplay, textRecord;
     private RequestQueue queue;
-    private int[] secretCode = {1, 2, 3, 4}, userInput = {0, 0 ,0 ,0};
+    private int[] secretCode = {1, 2, 3, 4}, userInput = {0, 0 ,0 ,0}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0};
     private String responseString, result;
     StringBuilder recordedAttempts = new StringBuilder(500);
-    int attempts = 10, correctDigits = 0, correctPositions = 0;
+    int attempts = 10, correctDigits = 0, correctPositions = 0, difficulty = 0;
     private boolean gameOver = false;
-    private boolean[] secretNums = new boolean[8];
+//    private boolean[] secretNums = new boolean[8];
     NumberPicker[] numberPickers = new NumberPicker[4];
 
     String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         gameOver = false;
         attempts = 10;
         for(int i = 0; i < secretNums.length; i++) {
-            secretNums[i] = false;
+            secretNums[i] = 0;
         }
         generateSecretCode();
 
@@ -73,10 +73,12 @@ public class MainActivity extends AppCompatActivity {
         tryButton.setText("Try Code");
 
     }
+
     void colorNumberPicker(int colorState, NumberPicker picker){
+        // colorstate replaced with difficulty, w
         switch(colorState){
             case 0:
-                picker.setBackgroundColor(Color.TRANSPARENT);
+                picker.setBackgroundColor(Color.TRANSPARENT);//reset picker color
                 break;
             case 1:
                 picker.setBackgroundColor(Color.rgb(88,196,99)); // correct num and pos
@@ -85,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 picker.setBackgroundColor(Color.rgb(207, 158, 68)); //correct num
                 break;
         }
-
-
 
     }
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     correctPositions+=1;
                     colorNumberPicker(1,numberPickers[i]);//if hint mode is x, d that
                 }
-                if(secretNums[userInput[i]]){
+                if(secretNums[userInput[i]] > 0){
                     correctDigits+=1;
                 }
             }
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         textDisplay.setText("Game is ready to go!");
                         for(int i = 0; i < 4; i++){
-                            secretNums[secretCode[i]] = true;
+                            secretNums[secretCode[i]] += 1;
                         }
                         tryButton.setEnabled(true);
                     }
