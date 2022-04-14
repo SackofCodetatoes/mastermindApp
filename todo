@@ -29,6 +29,8 @@ Wednesday Goals
         x go through priority (colorize correct position and number first before secondary colorization) (PRIORITY)
         - fix easy mode / adjust
 
+        - implement a screen manager to handle the screen items
+
 - shift UI around to be more user friendly
 - customize display so it doesnt look so default
 

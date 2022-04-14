@@ -1,6 +1,7 @@
 package com.example.mastermind;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Group;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder recordedAttempts = new StringBuilder(500);
     int attempts = 10, correctDigits = 0, correctPositions = 0, difficulty = 0;
     private boolean gameOver = false;
-//    private boolean[] secretNums = new boolean[8];
     NumberPicker[] numberPickers = new NumberPicker[4];
+    private Group difficultyButtonsGroup;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,29 +44,22 @@ public class MainActivity extends AppCompatActivity {
 
     void toggleButtons(int onOff){
         if(onOff == 0){
-            easyButton.setVisibility(View.INVISIBLE);
-            mediumButton.setVisibility(View.INVISIBLE);
-            hardButton.setVisibility(View.INVISIBLE);
-            easyButton.setEnabled(false);
-            mediumButton.setEnabled(false);
-            hardButton.setEnabled(false);
+            difficultyButtonsGroup.setVisibility(View.INVISIBLE);
+            difficultyButtonsGroup.setEnabled(false);
             tryButton.setVisibility(View.VISIBLE);
         }
         else if(onOff == 1){
-            easyButton.setVisibility(View.VISIBLE);
-            mediumButton.setVisibility(View.VISIBLE);
-            hardButton.setVisibility(View.VISIBLE);
-            easyButton.setEnabled(true);
-            mediumButton.setEnabled(true);
-            hardButton.setEnabled(true);
+            difficultyButtonsGroup.setVisibility(View.VISIBLE);
+            difficultyButtonsGroup.setEnabled(true);
             tryButton.setVisibility(View.INVISIBLE);
         }
     }
     void initButtons(){
         tryButton = findViewById(R.id.button_main_clicker);
         easyButton = findViewById(R.id.button_main_easy);
-        mediumButton = findViewById(R.id.button_main_medium);
+//        mediumButton = findViewById(R.id.button_main_medium);
         hardButton = findViewById(R.id.button_main_hard);
+        difficultyButtonsGroup = findViewById(R.id.difficulty_main_group);
 
         tryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -78,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
                 initializeGame();
             }
         });
-        mediumButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //set difficulty + hide buttons
-                difficulty = 1;
-                toggleButtons(0);
-                initializeGame();
-            }
-        });
+//        mediumButton.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View v){
+//                //set difficulty + hide buttons
+//                difficulty = 1;
+//                toggleButtons(0);
+//                initializeGame();
+//            }
+//        });
         hardButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //set difficulty + hide buttons
@@ -131,24 +127,24 @@ public class MainActivity extends AppCompatActivity {
 
         //color number pickers based on difficulty
         switch(difficulty){
+//            case 1:
+//                //if easy mode, color all userinput responses accordingly
+//                //color wheel based on userResponse with multis
+//                for(int i = 0; i < correctInputs.length; i++) {
+//                    switch(correctInputs[i]){
+//                        case 1:
+//                            numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+//                            break;
+//                        case 2:
+//                            numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
+//                            break;
+//                        case 3:
+//                            numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
+//                            break;
+//                    }
+//                }
+//                break;
             case 0:
-                //if easy mode, color all userinput responses accordingly
-                //color wheel based on userResponse with multis
-                for(int i = 0; i < correctInputs.length; i++) {
-                    switch(correctInputs[i]){
-                        case 1:
-                            numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
-                            break;
-                        case 2:
-                            numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
-                            break;
-                        case 3:
-                            numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
-                            break;
-                    }
-                }
-                break;
-            case 1:
                 //medium - color correct nums
                 //color wheel based on userInputResponse;
                 for(int i = 0; i < correctInputs.length; i++) {
@@ -271,6 +267,8 @@ public class MainActivity extends AppCompatActivity {
         numberPickers[1] = picker2;
         numberPickers[2] = picker3;
         numberPickers[3] = picker4;
+        Group numberPickersGroup = findViewById(R.id.numberpickers_main_group);
+
 
         for(int i = 0; i < numberPickers.length; i++){
             numberPickers[i].setMaxValue(7);
