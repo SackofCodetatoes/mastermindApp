@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+
 public class MainActivity extends AppCompatActivity {
     private Button tryButton, normalButton, mediumButton, hardButton;
     private Button menuNormalButton, menuHardButton, menuStartButton;
@@ -34,21 +35,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        contentViewSwitcher(0);
+//        setContentView(R.layout.activity_menu);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         getWindow().setSoftInputMode(
             WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-//        initMenuInterface(); //probably implement later
-        initMenuLayoutButtons();
-          //initMainLayoutInterface();
-//        initMainLayoutButtons();
-
     }
 
     void contentViewSwitcher(int viewTarget){
         //used to switch between contents and init neccesary items
+        switch(viewTarget){
+            case 0:
+                setContentView(R.layout.activity_menu);
+                //initMenuInterface(); //probably implement later
+                initMenuLayoutButtons();
+                break;
+            case 1:
+                setContentView(R.layout.activity_main);
+                initMainLayoutInterface();
+                initMainLayoutButtons();
+                toggleButtons(0);
+                initializeGame();
+                break;
+        }
+
     }
     void toggleButtons(int onOff){
         if(onOff == 0){
@@ -89,11 +101,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 //disable main group and enable the start screen with difficulty
                 Group menuGroup = findViewById(R.id.group_menu_screen);
-//                menuGroup.setVisibility(View.INVISIBLE);
-//                Group mainGroup = findViewById(R.id.group_main_screen);
-//                mainGroup.setVisibility(View.VISIBLE);
-                setContentView(R.layout.activity_main);
-//                initializeGame();
+                contentViewSwitcher(1); //set view to main activity
+
             }
         });
     }
@@ -126,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
                 initializeGame();
             }
         });
-
     }
 
     void initializeGame(){
