@@ -59,9 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 toggleButtons(0);
                 initializeGame();
                 break;
+            case 2:
+                //set view to gameover
+                setContentView(R.layout.activity_gameover);
+                //init text and buttons
+                break;
         }
-
     }
+
     void toggleButtons(int onOff){
         if(onOff == 0){
             difficultyButtonsGroup.setVisibility(View.INVISIBLE);
@@ -73,68 +78,6 @@ public class MainActivity extends AppCompatActivity {
             difficultyButtonsGroup.setEnabled(true);
             tryButton.setVisibility(View.INVISIBLE);
         }
-    }
-
-    void initMenuLayoutButtons(){
-        menuStartButton = findViewById(R.id.button_menu_start);
-        menuNormalButton = findViewById(R.id.button_menu_normal);
-        menuHardButton = findViewById(R.id.button_menu_hard);
-        menuNormalButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //set difficulty + hide buttons
-                difficulty = 0;
-                menuNormalButton.setBackgroundColor(Color.BLUE);
-                menuHardButton.setBackgroundColor(Color.GRAY);;
-                menuStartButton.setEnabled(true);
-            }
-        });
-        menuHardButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //set difficulty + hide buttons
-                difficulty = 2;
-                menuHardButton.setBackgroundColor(Color.BLUE);
-                menuNormalButton.setBackgroundColor(Color.GRAY);
-                menuStartButton.setEnabled(true);
-            }
-        });
-        menuStartButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //disable main group and enable the start screen with difficulty
-                Group menuGroup = findViewById(R.id.group_menu_screen);
-                contentViewSwitcher(1); //set view to main activity
-
-            }
-        });
-    }
-
-    void initMainLayoutButtons(){
-        tryButton = findViewById(R.id.button_main_clicker);
-        normalButton = findViewById(R.id.button_main_easy);
-//        mediumButton = findViewById(R.id.button_main_medium);
-        hardButton = findViewById(R.id.button_main_hard);
-        difficultyButtonsGroup = findViewById(R.id.difficulty_main_group);
-
-        tryButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                checkCode();
-            }
-        });
-        normalButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //set difficulty + hide buttons
-                difficulty = 0;
-                toggleButtons(0);
-                initializeGame();
-            }
-        });
-        hardButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //set difficulty + hide buttons
-                difficulty = 2;
-                toggleButtons(0);
-                initializeGame();
-            }
-        });
     }
 
     void initializeGame(){
@@ -251,8 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 textDisplay.setText("You won! Play again?");
                 tryButton.setText("Restart Game");
                 //do stuff on win and set game to game over state
-                //run congratulations effect
-                //play sound?
+                //change pop up modal with semi transparent white background with game state, stats, and option buttons
             } else if(correctPositions > 0){
                 textDisplay.setText("Player guessed a correct number and position. Try again");
                 result = " correct num & pos";
@@ -273,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
             textRecord.setText(recordedAttempts);
 
             if(attempts <= 0){
+                //change contentview to gameover?
                 textDisplay.setText("Gameover. Secret code was " + secretCode[0]+ secretCode[1]+ secretCode[2]+ secretCode[3]+".");
                 gameOver = true;
                 tryButton.setText("Restart Game");
@@ -284,6 +227,68 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("secret nums: ", ""+ secretNums[0] + " " + secretNums[1] + " "+ secretNums[2] + " "+ secretNums[3] + " "+ secretNums[4] + " "+ secretNums[5] + " "+ secretNums[6] + " "+ secretNums[7] + " ");
     }
 
+
+    void initMenuLayoutButtons(){
+        menuStartButton = findViewById(R.id.button_menu_start);
+        menuNormalButton = findViewById(R.id.button_menu_normal);
+        menuHardButton = findViewById(R.id.button_menu_hard);
+        menuNormalButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 0;
+                menuNormalButton.setBackgroundColor(Color.BLUE);
+                menuHardButton.setBackgroundColor(Color.GRAY);;
+                menuStartButton.setEnabled(true);
+            }
+        });
+        menuHardButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 2;
+                menuHardButton.setBackgroundColor(Color.BLUE);
+                menuNormalButton.setBackgroundColor(Color.GRAY);
+                menuStartButton.setEnabled(true);
+            }
+        });
+        menuStartButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //disable main group and enable the start screen with difficulty
+                Group menuGroup = findViewById(R.id.group_menu_screen);
+                contentViewSwitcher(1); //set view to main activity
+
+            }
+        });
+    }
+
+    void initMainLayoutButtons(){
+        tryButton = findViewById(R.id.button_main_clicker);
+        normalButton = findViewById(R.id.button_main_easy);
+//        mediumButton = findViewById(R.id.button_main_medium);
+        hardButton = findViewById(R.id.button_main_hard);
+        difficultyButtonsGroup = findViewById(R.id.difficulty_main_group);
+
+        tryButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                checkCode();
+            }
+        });
+        normalButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 0;
+                toggleButtons(0);
+                initializeGame();
+            }
+        });
+        hardButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 2;
+                toggleButtons(0);
+                initializeGame();
+            }
+        });
+    }
 
     void initMainLayoutInterface(){
         //assigns interface values
