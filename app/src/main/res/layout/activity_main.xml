@@ -19,6 +19,72 @@
     <!--        app:layout_constraintHorizontal_bias="0.5"-->
     <!--        app:layout_constraintStart_toEndOf="@+id/button_main_easy"-->
     <!--        app:layout_constraintTop_toBottomOf="@+id/text_main_display" />-->
+<!--screen menu-->
+    <TextView
+        android:id="@+id/text_menu_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:text="Mastermind"
+        android:textSize="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/menu_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Hint Difficulty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_menu_title" />
+
+    <Button
+        android:id="@+id/button_menu_normal"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menu_text" />
+
+    <Button
+        android:id="@+id/button_menu_hard"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:text="Hard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_menu_normal" />
+
+    <Button
+        android:id="@+id/button_menu_start"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:text="Start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_menu_hard" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_menu_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="menu_text,button_menu_hard,button_menu_normal,text_menu_title, button_menu_start" />
+
+
+    <!--    screen main -->
 
 
     <Button
@@ -28,7 +94,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="#47c984"
-        android:text="Easy"
+        android:text="Normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
 
@@ -155,5 +221,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="button_main_easy,button_main_hard" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_main_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="numberpicker_main_picker2,text_main_attempts,button_main_hard,button_main_clicker,button_main_easy,text_main_display,numberpicker_main_picker,numberpicker_main_picker3,scrollview_main_record, numberpicker_main_picker4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

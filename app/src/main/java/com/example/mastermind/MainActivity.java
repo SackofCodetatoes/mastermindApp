@@ -3,11 +3,7 @@ package com.example.mastermind;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
-
 import android.graphics.Color;
-import android.graphics.RadialGradient;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +19,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity {
-    private Button tryButton, easyButton, mediumButton, hardButton;
+    private Button tryButton, normalButton, mediumButton, hardButton;
+    private Button menuNormalButton, menuHardButton, menuStartButton;
     private TextView textDisplay, attemptsDisplay, textRecord;
     private int[] secretCode = {1, 2, 3, 4}, userInput = {0, 0 ,0 ,0}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0}, correctInputs = {0, 0, 0, 0};
     private String responseString, result;
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
 
         interfaceInit();
@@ -62,8 +59,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     void initButtons(){
+        menuStartButton = findViewById(R.id.button_menu_start);
+        menuNormalButton = findViewById(R.id.button_menu_normal);
+        menuHardButton = findViewById(R.id.button_menu_hard);
         tryButton = findViewById(R.id.button_main_clicker);
-        easyButton = findViewById(R.id.button_main_easy);
+        normalButton = findViewById(R.id.button_main_easy);
 //        mediumButton = findViewById(R.id.button_main_medium);
         hardButton = findViewById(R.id.button_main_hard);
         difficultyButtonsGroup = findViewById(R.id.difficulty_main_group);
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 checkCode();
             }
         });
-        easyButton.setOnClickListener(new View.OnClickListener(){
+        normalButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //set difficulty + hide buttons
                 difficulty = 0;
@@ -81,18 +81,39 @@ public class MainActivity extends AppCompatActivity {
                 initializeGame();
             }
         });
-//        mediumButton.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View v){
-//                //set difficulty + hide buttons
-//                difficulty = 1;
-//                toggleButtons(0);
-//                initializeGame();
-//            }
-//        });
         hardButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //set difficulty + hide buttons
                 difficulty = 2;
+                toggleButtons(0);
+                initializeGame();
+            }
+        });
+        menuNormalButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 0;
+                menuNormalButton.setBackgroundColor(Color.BLUE);
+                menuHardButton.setBackgroundColor(Color.GRAY);;
+                menuStartButton.setEnabled(true);
+            }
+        });
+        menuHardButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 2;
+                menuHardButton.setBackgroundColor(Color.BLUE);
+                menuNormalButton.setBackgroundColor(Color.GRAY);
+                menuStartButton.setEnabled(true);
+            }
+        });
+        menuStartButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //disable main group and enable the start screen with difficulty
+                Group menuGroup = findViewById(R.id.group_menu_screen);
+                menuGroup.setVisibility(View.INVISIBLE);
+                Group mainGroup = findViewById(R.id.group_main_screen);
+                mainGroup.setVisibility(View.VISIBLE);
                 toggleButtons(0);
                 initializeGame();
             }
@@ -227,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             //result from checking code, can modify values to variables for extension
             if(correctPositions == 4) {
                 gameOver = true;
-                textDisplay.setText("You won! pls program reset");
+                textDisplay.setText("You won! Play again?");
                 tryButton.setText("Restart Game");
                 //do stuff on win and set game to game over state
                 //run congratulations effect
@@ -258,9 +279,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         //debug
-        Log.d("userInput:", "" + userInput[0] + userInput[1] + userInput[2] + userInput[3]);
+        Log.d("difficulty set to", "" + difficulty);
         Log.d("secret code", "" + secretCode[0] + secretCode[1] + secretCode[2] + secretCode[3]);
-        Log.d("secret nums: ", ""+ secretNums[0] + " " + secretNums[1] + " "+ secretNums[2] + " "+ secretNums[3] + " "+ secretNums[4] + " "+ secretNums[5] + " "+ secretNums[6] + " "+ secretNums[7] + " ");
+//        Log.d("secret nums: ", ""+ secretNums[0] + " " + secretNums[1] + " "+ secretNums[2] + " "+ secretNums[3] + " "+ secretNums[4] + " "+ secretNums[5] + " "+ secretNums[6] + " "+ secretNums[7] + " ");
     }
 
 
