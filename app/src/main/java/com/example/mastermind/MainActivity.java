@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 
 import android.graphics.Color;
+import android.graphics.RadialGradient;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     int attempts = 10, correctDigits = 0, correctPositions = 0, difficulty = 0;
     private boolean gameOver = false;
     NumberPicker[] numberPickers = new NumberPicker[4];
-    private Group difficultyButtonsGroup;
+    private Group difficultyButtonsGroup, numberPickersGroup;
 
 
     @Override
@@ -159,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 for(int i = 0; i < correctInputs.length; i++){
                     if(correctMultiples[userInput[i]] > 0 && correctInputs[i] != 1){
-                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));//resetting the previous, think of way to skip corrected items or another way to handle this
+                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
                         correctMultiples[userInput[i]] -= 1;
                     }
                 }
@@ -169,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
                 if(correctPositions > 0){
                     //color whole wheel in green
                     for(int i = 0; i < numberPickers.length; i++) {
-                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+//                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+                        numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
                     }
                 }
                 else if(correctDigits > 0){
@@ -271,7 +275,8 @@ public class MainActivity extends AppCompatActivity {
         numberPickers[1] = picker2;
         numberPickers[2] = picker3;
         numberPickers[3] = picker4;
-        Group numberPickersGroup = findViewById(R.id.numberpickers_main_group);
+        numberPickersGroup = findViewById(R.id.numberpickers_main_group);
+
 
 
         for(int i = 0; i < numberPickers.length; i++){
