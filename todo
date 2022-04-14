@@ -9,8 +9,8 @@ Wednesday Goals
 
 - complete hint system (connected with difficulty setting)
     - provide difficulty options at each restart and provide highlighted hints accordingly
-        ? easy: highlights correct digits with green, multiple correct nums with blue and single correct nums with orange
-        - medium: hl correct digits with green and correct nums with orange
+        ? (scrapped) easy: highlights correct digits with green, multiple correct nums with blue and single correct nums with orange
+        x medium: hl correct digits with green and correct nums with orange
         x hard: highlight all pickers with the responses from directions. green if num is right pos, orange if correct num but not spot, blank for no correct
 
         main will have difficult setting. click button -> set the difficulty rating
@@ -27,19 +27,21 @@ Wednesday Goals
         - simplify the attempts record with colors based on difficulty
         x reveal only as many letters as there is, wordle example
         x go through priority (colorize correct position and number first before secondary colorization) (PRIORITY)
-        - fix easy mode / adjust
+        x fix easy mode / adjust
 
         - implement a screen manager to handle the screen items
 
 - shift UI around to be more user friendly
 - customize display so it doesnt look so default
 
-- add start screen to provide game instructions
+? add start screen to provide game instructions
 - factor in horizontal mode (test on different device sizes)
 - factor in customization (code length, number of attempts)
+- add in end screen
 - add some effects (audio + animation on win, etc)
 
 Thursday
 - remove debugging messages
 - refactor and cleanup any messy code
+- move some code to different files
 - test and get feedback
