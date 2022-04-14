@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -19,19 +18,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity {
-    private NumberPicker picker1, picker2, picker3, picker4;
-    private String[] pickerVals;
     private Button tryButton, easyButton, mediumButton, hardButton;
     private TextView textDisplay, attemptsDisplay, textRecord;
-    private RequestQueue queue;
     private int[] secretCode = {1, 2, 3, 4}, userInput = {0, 0 ,0 ,0}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0}, correctInputs = {0, 0, 0, 0};
     private String responseString, result;
     StringBuilder recordedAttempts = new StringBuilder(500);
     int attempts = 10, correctDigits = 0, correctPositions = 0, difficulty = 0;
     private boolean gameOver = false;
+//    private boolean[] secretNums = new boolean[8];
     NumberPicker[] numberPickers = new NumberPicker[4];
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 correctInputs[i] = 0;
             }
 
-            //setup array as user input from number pickers
+            //setup array as userinput from number pickers
             for(int i = 0; i < userInput.length; i++){
                 userInput[i] = numberPickers[i].getValue();
             }
@@ -256,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 textDisplay.setText("Gameover. Secret code was " + secretCode[0]+ secretCode[1]+ secretCode[2]+ secretCode[3]+".");
                 gameOver = true;
                 tryButton.setText("Restart Game");
-            };
+            }
         }
         //debug
         Log.d("userInput:", "" + userInput[0] + userInput[1] + userInput[2] + userInput[3]);
@@ -267,11 +262,11 @@ public class MainActivity extends AppCompatActivity {
 
     void interfaceInit(){
         //assigns interface values
-        pickerVals = new String[] {"0", "1", "2", "3", "4", "5", "6", "7"};
-        picker1 = findViewById(R.id.numberpicker_main_picker);
-        picker2 = findViewById(R.id.numberpicker_main_picker2);
-        picker3 = findViewById(R.id.numberpicker_main_picker3);
-        picker4 = findViewById(R.id.numberpicker_main_picker4);
+        String[] pickerVals = new String[]{"0", "1", "2", "3", "4", "5", "6", "7"};
+        NumberPicker picker1 = findViewById(R.id.numberpicker_main_picker);
+        NumberPicker picker2 = findViewById(R.id.numberpicker_main_picker2);
+        NumberPicker picker3 = findViewById(R.id.numberpicker_main_picker3);
+        NumberPicker picker4 = findViewById(R.id.numberpicker_main_picker4);
         numberPickers[0] = picker1;
         numberPickers[1] = picker2;
         numberPickers[2] = picker3;
@@ -292,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void generateSecretCode(){
         String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
-        queue = Volley.newRequestQueue(this);
+        RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

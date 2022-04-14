@@ -25,9 +25,9 @@ Wednesday Goals
         - if 0, color individual wheels with additional color of multiples
 
         - simplify the attempts record with colors based on difficulty
-        ? reveal only as many letters as there is, wordle example
-        - go through priority (colorize correct position and number first before secondary colorization) (PRIORITY)
-
+        x reveal only as many letters as there is, wordle example
+        x go through priority (colorize correct position and number first before secondary colorization) (PRIORITY)
+        - fix easy mode / adjust
 
 - shift UI around to be more user friendly
 - customize display so it doesnt look so default
