@@ -8,9 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -31,26 +29,21 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder recordedAttempts = new StringBuilder(500);
     int attempts = 10, correctDigits = 0, correctPositions = 0, difficulty = 0;
     private boolean gameOver = false;
-//    private boolean[] secretNums = new boolean[8];
     NumberPicker[] numberPickers = new NumberPicker[4];
 
-    String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
-    @Override
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-
         interfaceInit();
         initButtons();
-//        initializeGame();
-
-
-
     }
+
+
     void toggleButtons(int onOff){
         if(onOff == 0){
             easyButton.setVisibility(View.INVISIBLE);
@@ -106,9 +99,8 @@ public class MainActivity extends AppCompatActivity {
                 initializeGame();
             }
         });
-
-
     }
+
     void initializeGame(){
         //change buttons to difficulty setting
         //on click and setting of difficulty, the function will hide difficulty buttons and show the try code button
@@ -165,22 +157,20 @@ public class MainActivity extends AppCompatActivity {
                 //medium - color correct nums
                 //color wheel based on userInputResponse;
                 for(int i = 0; i < correctInputs.length; i++) {
-                    switch(correctInputs[i]){
-                        case 1:
-                            numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
-                            break;
-                        case 2: case 3:
-                            if(correctMultiples[userInput[i]] > 0){
-                                numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
-                                correctMultiples[userInput[i]] -= 1;
-                            }
-                            break;
+                    if (correctInputs[i] == 1) {
+                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+                        correctMultiples[userInput[i]] -= 1;
                     }
-
+                }
+                for(int i = 0; i < correctInputs.length; i++){
+                    if(correctMultiples[userInput[i]] > 0 && correctInputs[i] != 1){
+                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));//resetting the previous, think of way to skip corrected items or another way to handle this
+                        correctMultiples[userInput[i]] -= 1;
+                    }
                 }
                 break;
             case 2:
-                //color whole combination to indicate response
+                //hard - color whole combination to indicate response
                 if(correctPositions > 0){
                     //color whole wheel in green
                     for(int i = 0; i < numberPickers.length; i++) {
@@ -211,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 correctInputs[i] = 0;
             }
 
-            //setup array as userinput from number pickers
+            //setup array as user input from number pickers
             for(int i = 0; i < userInput.length; i++){
                 userInput[i] = numberPickers[i].getValue();
             }
@@ -222,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                     correctPositions+=1;
                     correctInputs[i] = 1;
                 }
-                //9 = correct pos, > 0 will reduce
+                //1 = correct pos, > 0 will reduce
                 else if(secretNums[userInput[i]] > 0){
                     correctDigits+=1;
                     if(secretNums[userInput[i]] > 1){
@@ -239,13 +229,14 @@ public class MainActivity extends AppCompatActivity {
             if(correctPositions == 4) {
                 gameOver = true;
                 textDisplay.setText("You won! pls program reset");
-                //do stuff on win and set game to gameover state
-                //run congradulations effect
+                tryButton.setText("Restart Game");
+                //do stuff on win and set game to game over state
+                //run congratulations effect
                 //play sound?
             } else if(correctPositions > 0){
                 textDisplay.setText("Player guessed a correct number and position. Try again");
                 result = " correct num & pos";
-                //color numberpickers based on correctness
+                //color number pickers based on correctness
             } else if(correctDigits > 0) {
                 textDisplay.setText("Player guessed a correct number. Try again");
                 result = " correct num";
@@ -298,7 +289,9 @@ public class MainActivity extends AppCompatActivity {
         attemptsDisplay = findViewById(R.id.text_main_attempts);
 
     }
+
     private void generateSecretCode(){
+        String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
         queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

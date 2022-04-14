@@ -9,9 +9,9 @@ Wednesday Goals
 
 - complete hint system (connected with difficulty setting)
     - provide difficulty options at each restart and provide highlighted hints accordingly
-        - easy: highlights correct digits with green, multiple correct nums with blue and single correct nums with orange
+        ? easy: highlights correct digits with green, multiple correct nums with blue and single correct nums with orange
         - medium: hl correct digits with green and correct nums with orange
-        - hard: highlight all pickers with the responses from directions. green if num is right pos, orange if correct num but not spot, blank for no correct
+        x hard: highlight all pickers with the responses from directions. green if num is right pos, orange if correct num but not spot, blank for no correct
 
         main will have difficult setting. click button -> set the difficulty rating
         create an array of numbers to indicate the reading output when checking code
@@ -25,11 +25,12 @@ Wednesday Goals
         - if 0, color individual wheels with additional color of multiples
 
         - simplify the attempts record with colors based on difficulty
-        - reveal only as many letters as there is, wordle example
+        ? reveal only as many letters as there is, wordle example
         - go through priority (colorize correct position and number first before secondary colorization) (PRIORITY)
 
 
 - shift UI around to be more user friendly
+- customize display so it doesnt look so default
 
 - add start screen to provide game instructions
 - factor in horizontal mode (test on different device sizes)
