@@ -34,18 +34,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_menu);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         getWindow().setSoftInputMode(
             WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
+//        initMenuInterface(); //probably implement later
+        initMenuLayoutButtons();
+          //initMainLayoutInterface();
+//        initMainLayoutButtons();
 
-        interfaceInit();
-        initButtons();
     }
 
-
+    void contentViewSwitcher(int viewTarget){
+        //used to switch between contents and init neccesary items
+    }
     void toggleButtons(int onOff){
         if(onOff == 0){
             difficultyButtonsGroup.setVisibility(View.INVISIBLE);
@@ -58,10 +62,43 @@ public class MainActivity extends AppCompatActivity {
             tryButton.setVisibility(View.INVISIBLE);
         }
     }
-    void initButtons(){
+
+    void initMenuLayoutButtons(){
         menuStartButton = findViewById(R.id.button_menu_start);
         menuNormalButton = findViewById(R.id.button_menu_normal);
         menuHardButton = findViewById(R.id.button_menu_hard);
+        menuNormalButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 0;
+                menuNormalButton.setBackgroundColor(Color.BLUE);
+                menuHardButton.setBackgroundColor(Color.GRAY);;
+                menuStartButton.setEnabled(true);
+            }
+        });
+        menuHardButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //set difficulty + hide buttons
+                difficulty = 2;
+                menuHardButton.setBackgroundColor(Color.BLUE);
+                menuNormalButton.setBackgroundColor(Color.GRAY);
+                menuStartButton.setEnabled(true);
+            }
+        });
+        menuStartButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //disable main group and enable the start screen with difficulty
+                Group menuGroup = findViewById(R.id.group_menu_screen);
+//                menuGroup.setVisibility(View.INVISIBLE);
+//                Group mainGroup = findViewById(R.id.group_main_screen);
+//                mainGroup.setVisibility(View.VISIBLE);
+                setContentView(R.layout.activity_main);
+//                initializeGame();
+            }
+        });
+    }
+
+    void initMainLayoutButtons(){
         tryButton = findViewById(R.id.button_main_clicker);
         normalButton = findViewById(R.id.button_main_easy);
 //        mediumButton = findViewById(R.id.button_main_medium);
@@ -89,35 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 initializeGame();
             }
         });
-        menuNormalButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //set difficulty + hide buttons
-                difficulty = 0;
-                menuNormalButton.setBackgroundColor(Color.BLUE);
-                menuHardButton.setBackgroundColor(Color.GRAY);;
-                menuStartButton.setEnabled(true);
-            }
-        });
-        menuHardButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //set difficulty + hide buttons
-                difficulty = 2;
-                menuHardButton.setBackgroundColor(Color.BLUE);
-                menuNormalButton.setBackgroundColor(Color.GRAY);
-                menuStartButton.setEnabled(true);
-            }
-        });
-        menuStartButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //disable main group and enable the start screen with difficulty
-                Group menuGroup = findViewById(R.id.group_menu_screen);
-                menuGroup.setVisibility(View.INVISIBLE);
-                Group mainGroup = findViewById(R.id.group_main_screen);
-                mainGroup.setVisibility(View.VISIBLE);
-                toggleButtons(0);
-                initializeGame();
-            }
-        });
+
     }
 
     void initializeGame(){
@@ -155,23 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
         //color number pickers based on difficulty
         switch(difficulty){
-//            case 1:
-//                //if easy mode, color all userinput responses accordingly
-//                //color wheel based on userResponse with multis
-//                for(int i = 0; i < correctInputs.length; i++) {
-//                    switch(correctInputs[i]){
-//                        case 1:
-//                            numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
-//                            break;
-//                        case 2:
-//                            numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
-//                            break;
-//                        case 3:
-//                            numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
-//                            break;
-//                    }
-//                }
-//                break;
             case 0:
                 //medium - color correct nums
                 //color wheel based on userInputResponse;
@@ -285,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    void interfaceInit(){
+    void initMainLayoutInterface(){
         //assigns interface values
         String[] pickerVals = new String[]{"0", "1", "2", "3", "4", "5", "6", "7"};
         NumberPicker picker1 = findViewById(R.id.numberpicker_main_picker);
