@@ -11,12 +11,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         contentViewSwitcher(0);
-//        setContentView(R.layout.activity_menu);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         getWindow().setSoftInputMode(
@@ -45,11 +47,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void contentViewSwitcher(int viewTarget){
-        //used to switch between contents and init neccesary items
         switch(viewTarget){
             case 0:
                 setContentView(R.layout.activity_menu);
-                //initMenuInterface(); //probably implement later
                 initMenuLayoutButtons();
                 break;
             case 1:
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 initializeGame();
                 break;
             case 2:
-                //set view to gameover
                 setContentView(R.layout.activity_gameover);
                 //init text and buttons
                 break;
@@ -96,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setValue(0);
             numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
-        }
+        } //place in  where actually resetting the picker
         recordedAttempts.setLength(0);
         textRecord.setText("");
-        attemptsDisplay.setText("Attempts Remaining: "+ attempts);
-        tryButton.setText("Try Code");
+        attemptsDisplay.setText("Attempts Remaining: "+ attempts);//go back to properplaces
+        tryButton.setText("Try Code");//generate
 
     }
 
@@ -111,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
         }
-
 
         //color number pickers based on difficulty
         switch(difficulty){
@@ -128,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     if(correctMultiples[userInput[i]] > 0 && correctInputs[i] != 1){
                         numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
                         correctMultiples[userInput[i]] -= 1;
+                        //do doc strings to be more readability, there are built in functions Java docstring style copy that //comment only if confusing or esoteric code smell
                     }
                 }
                 break;
@@ -293,19 +292,11 @@ public class MainActivity extends AppCompatActivity {
     void initMainLayoutInterface(){
         //assigns interface values
         String[] pickerVals = new String[]{"0", "1", "2", "3", "4", "5", "6", "7"};
-        NumberPicker picker1 = findViewById(R.id.numberpicker_main_picker);
-        NumberPicker picker2 = findViewById(R.id.numberpicker_main_picker2);
-        NumberPicker picker3 = findViewById(R.id.numberpicker_main_picker3);
-        NumberPicker picker4 = findViewById(R.id.numberpicker_main_picker4);
-        numberPickers[0] = picker1;
-        numberPickers[1] = picker2;
-        numberPickers[2] = picker3;
-        numberPickers[3] = picker4;
+        int[] pickerIDs = {R.id.numberpicker_main_picker, R.id.numberpicker_main_picker2, R.id.numberpicker_main_picker3, R.id.numberpicker_main_picker4};
         numberPickersGroup = findViewById(R.id.numberpickers_main_group);
 
-
-
-        for(int i = 0; i < numberPickers.length; i++){
+        for(int i = 0; i < pickerIDs.length; i++){
+            numberPickers[i] = findViewById(pickerIDs[i]);
             numberPickers[i].setMaxValue(7);
             numberPickers[i].setMinValue(0);
             numberPickers[i].setDisplayedValues(pickerVals);
@@ -318,21 +309,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void generateSecretCode(){
+    private void generateSecretCode(){ //take out as own class
         String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("Response", "" + Arrays.toString(response.split("\n")));
+//                        int[] secretCodeResponse = response.split("\n"); //implment this
                         responseString = response.substring(0, 8);
-                        responseString = responseString.replaceAll("[^0-7]", "");
+                        responseString = responseString.replaceAll("[^0-7]", "");//redundant, put
                         for(int i = 0; i < responseString.length(); i++){
                             secretCode[i] = Character.getNumericValue((responseString.charAt(i)));
                         }
                         textDisplay.setText("Game is ready to go!");
                         for(int i = 0; i < 4; i++){
-                            secretNums[secretCode[i]] += 1;
+                            //{0,0,2,0,0,0,0}
+                            secretNums[secretCode[i]] += 1;//bitmap overkill, can simplify to checking index , dictionary/ keyvalue par, keep index in mind and looking forwrd
                         }
                         tryButton.setEnabled(true);
                     }

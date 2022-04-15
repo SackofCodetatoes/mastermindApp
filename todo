@@ -29,7 +29,7 @@ Wednesday Goals
         x go through priority (colorize correct position and number first before secondary colorization) (PRIORITY)
         x fix easy mode / adjust
 
-        - implement a screen manager to handle the screen items
+        x implement a screen manager to handle the screen items
 
 - shift UI around to be more user friendly
 - customize display so it doesnt look so default
@@ -41,7 +41,27 @@ Wednesday Goals
 - add some effects (audio + animation on win, etc)
 
 Thursday
+- gitignore logs and all other info not pertaining to the project
+- remove comments unless code segments are confusing
+- make corrections
+
 - remove debugging messages
 - refactor and cleanup any messy code
 - move some code to different files
 - test and get feedback
+
+look at unit tests and testing specific units of the code
+single responsibility principle - code does specific things
+is this part of my code doing exactly what i expecting it to do
+can decompose - is random number generator
+helps break down the code and helps towards correctness
+end to end test - see if all the parts fit together and test the components individually
+
+java
+remove logs- remove error log files from github
+almost never have global variables, pass individual elements across difficult to contro
+hin difficulty
+array of 4 ids
+seperarte different classes
+
+really seperate all the class
