@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textDisplay, attemptsDisplay, textRecord;
     NumberPicker[] numberPickers = new NumberPicker[4];
     private Group difficultyButtonsGroup, numberPickersGroup;
-    int selectedDifficulty;//refactor later
+    int selectedDifficulty, numOfNums = 4;//refactor later
     MasterMind gameInstance;
 
     @Override
@@ -42,16 +41,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 setContentView(R.layout.activity_main);
-                initMainLayoutInterface();
-                initMainLayoutButtons();
+                initGameLayoutInterface();
+                initGameLayoutButtons();
                 toggleButtons(0);
-                gameInstance.initialize(selectedDifficulty);
+                gameInstance.initialize(selectedDifficulty, numOfNums);
                 break;
             case 2:
                 setContentView(R.layout.activity_gameover);
                 //init text and buttons
                 break;
         }
+    }
+    void updateView(){
+        //look at game instance object and update screen appropriately, 3 different results,
+        //1 - gameover, do gameover popup and options
+        //2 - game is ongoing, udpate gamelayout and do colorize
+        //
     }
 
     void toggleButtons(int onOff){
@@ -139,12 +144,11 @@ public class MainActivity extends AppCompatActivity {
                 //disable main group and enable the start screen with difficulty
                 Group menuGroup = findViewById(R.id.group_menu_screen);
                 contentViewSwitcher(1); //set view to main activity
-
             }
         });
     }
 
-    void initMainLayoutButtons(){
+    void initGameLayoutButtons(){
         tryButton = findViewById(R.id.button_main_clicker);
         normalButton = findViewById(R.id.button_main_easy);
         hardButton = findViewById(R.id.button_main_hard);
@@ -152,29 +156,33 @@ public class MainActivity extends AppCompatActivity {
 
         tryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-//                gameInstance.checkCode(userinputedCode);
+                //check clickers for input and do game check and respond
+                int[] userInput = new int[numOfNums];
+                for(int i = 0; i < userInput.length; i++){
+                    userInput[i] = numberPickers[i].getValue();
+                }
+                gameInstance.checkCode(userInput);
+                //run method to update gamestate on screen, looks int gameInstance object to print and stuff
             }
         });
         normalButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //set difficulty + hide buttons
-//                difficulty = 0;
+                selectedDifficulty = 0;
                 toggleButtons(0);
-//                initializeGame();
+                gameInstance.initialize(selectedDifficulty, numOfNums);
+
             }
         });
         hardButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //set difficulty + hide buttons
-//                difficulty = 2;
+                selectedDifficulty = 1;
                 toggleButtons(0);
-//                initializeGame();
+                gameInstance.initialize(selectedDifficulty, numOfNums);
             }
         });
     }
 
-    void initMainLayoutInterface(){
-        //assigns interface values
+    void initGameLayoutInterface(){
         String[] pickerVals = new String[]{"0", "1", "2", "3", "4", "5", "6", "7"};
         int[] pickerIDs = {R.id.numberpicker_main_picker, R.id.numberpicker_main_picker2, R.id.numberpicker_main_picker3, R.id.numberpicker_main_picker4};
         numberPickersGroup = findViewById(R.id.numberpickers_main_group);

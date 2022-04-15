@@ -8,7 +8,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import java.util.Arrays;
 
 
@@ -23,17 +22,17 @@ public class MasterMind {
     public MasterMind(Context fromWhere){
         mainContext = fromWhere;
     }
-    void initialize(int selectedDifficulty){
+    void initialize(int selectedDifficulty, int numberOfDigits){
         gameOver = false;
         attempts = 10;
         for(int i = 0; i < secretNums.length; i++) {
             secretNums[i] = 0;
         }
-//        generateSecretCode();
+        generateSecretCode(numberOfDigits);
     }
 
 
-    void checkCode(int[] userInput){//take user input
+    void checkCode(int[] userInput){//take user input and return a result
         if(gameOver){
 //            toggleButtons(1); should be handled on main activity
         }
@@ -42,11 +41,6 @@ public class MasterMind {
             correctDigits = 0;
             for(int i = 0; i < userInput.length; i++){
                 correctInputs[i] = 0;
-            }
-
-            //setup array as userinput from number pickers
-            for(int i = 0; i < userInput.length; i++){
-//                userInput[i] = numberPickers[i].getValue();
             }
 
             //check code
@@ -105,7 +99,7 @@ public class MasterMind {
     }
 
 
-    private void generateSecretCode(){ //take out as own class
+    private void generateSecretCode(int numberOfDigits){ //take out as own class
         String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
         RequestQueue queue = Volley.newRequestQueue(mainContext);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
