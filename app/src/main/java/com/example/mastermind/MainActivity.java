@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     void updateView(){
         //look at game instance object and update screen appropriately, 3 different results,
         //1 - gameover, do gameover popup and options
-        //2 - game is ongoing, udpate gamelayout and do colorize
+        //2 - game is ongoing, update gamelayout and do colorize
         //
     }
 
@@ -73,49 +73,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void colorNumberPickers(int[] correctInputs){
-//        // color state replaced with difficulty, w
-//        //clear all color before coloring
-////        int [] correctMultiples = secretNums.clone();
-//        for(int i = 0; i < numberPickers.length; i++) {
-//            numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
-//        }
-//        //color based on result from game isntance object
-//        //color number pickers based on difficulty
-//        switch(difficulty){
-//            case 0:
-//                //medium - color correct nums
-//                //color wheel based on userInputResponse;
-//                for(int i = 0; i < correctInputs.length; i++) {
-//                    if (correctInputs[i] == 1) {
+//        int [] correctMultiples = secretNums.clone();
+        for(int i = 0; i < numberPickers.length; i++) {
+            numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        switch(selectedDifficulty){
+            case 0:
+                for(int i = 0; i < correctInputs.length; i++) {
+                    if (correctInputs[i] == 1) {
+                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+                        correctMultiples[userInput[i]] -= 1;
+                    }
+                }
+                for(int i = 0; i < correctInputs.length; i++){
+                    if(correctMultiples[userInput[i]] > 0 && correctInputs[i] != 1){
+                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
+                        correctMultiples[userInput[i]] -= 1;
+                    }
+                }
+                break;
+            case 1:
+                //make a better ui to indicate difficult hints
+                if(gameInstance.correctPositions > 0){
+                    //color whole wheel in green
+                    for(int i = 0; i < numberPickers.length; i++) {
 //                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
-//                        correctMultiples[userInput[i]] -= 1;
-//                    }
-//                }
-//                for(int i = 0; i < correctInputs.length; i++){
-//                    if(correctMultiples[userInput[i]] > 0 && correctInputs[i] != 1){
-//                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
-//                        correctMultiples[userInput[i]] -= 1;
-//                        //do doc strings to be more readability, there are built in functions Java docstring style copy that //comment only if confusing or esoteric code smell
-//                    }
-//                }
-//                break;
-//            case 1:
-//                //hard - color whole combination to indicate response
-//                if(correctPositions > 0){
-//                    //color whole wheel in green
-//                    for(int i = 0; i < numberPickers.length; i++) {
-////                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
-//                        numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
-//                    }
-//                }
-//                else if(correctDigits > 0){
-//                    //color whole wheel in orange209, 180, 48
-//                    for(int i = 0; i < numberPickers.length; i++) {
-//                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
-//                    }
-//                }
-//                break;
-//        }
+                        numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
+                    }
+                }
+                else if(gameInstance.correctDigits > 0){
+                    //color whole wheel in orange209, 180, 48
+                    for(int i = 0; i < numberPickers.length; i++) {
+                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
+                    }
+                }
+                break;
+        }
     }
 
     void initMenuLayoutButtons(){

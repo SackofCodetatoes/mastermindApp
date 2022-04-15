@@ -65,3 +65,7 @@ array of 4 ids
 seperarte different classes
 
 really seperate all the class
+
+notes;
+//do doc strings to be more readability, there are built in functions Java docstring style copy that //comment only if confusing or esoteric code smell
+
