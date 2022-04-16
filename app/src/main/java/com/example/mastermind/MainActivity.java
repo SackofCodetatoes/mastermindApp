@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     private Button tryButton, normalButton, mediumButton, hardButton, restartButton;
@@ -118,14 +121,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void colorNumberPickers(int[] correctInputs){
-//        int [] correctMultiples = secretNums.clone();
+    void colorNumberPickers(int[] inputResult){
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
         }
+        Log.d("Sanity check on inputResult ", Arrays.toString(inputResult));
 
         switch(selectedDifficulty){
             case 0:
+                for(int i = 0; i < inputResult.length; i++){
+                    switch(inputResult[i]){
+                        case 0:
+                            break;
+                        case 1:
+                            numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
+                            break;
+                        case 2:
+                            numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+                            break;
+                    }
+                }
 //                for(int i = 0; i < correctInputs.length; i++) {
 //                    if (correctInputs[i] == 1) {
 //                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
@@ -138,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 //                        correctMultiples[userInput[i]] -= 1;
 //                    }
 //                }
-//                break;
+                break;
             case 1:
                 //make a better ui to indicate difficult hints
                 if(gameInstance.correctPositions > 0){
@@ -203,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < userInput.length; i++){
                     userInput[i] = numberPickers[i].getValue();
                 }
-                inputResult = gameInstance.checkCode(userInput).clone();
+                inputResult = gameInstance.checkCode(userInput);
                 updateView();
                 //run method to update gamestate on screen, looks int gameInstance object to print and stuff
             }

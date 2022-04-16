@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class MasterMind {
@@ -33,30 +34,27 @@ public class MasterMind {
     }
 
 
-    int[] checkCode(int[] userInput){//take user input and return a result
+    int[] checkCode(int[] userInput){
+        //take user input and return a result format of [0, 1, 2, 0], 0 is not found, 1 is in code but not right place, 2 is correct place]
+        //will do heavy lifting of determining if usercode has these responses
         int[] inputResult = {0,0,0,0};
+        int[] numQuantities = secretNums.clone();
         correctPositions = 0;
         correctDigits = 0;
 
-        for(int i = 0; i < userInput.length; i++){
-            correctInputs[i] = 0;
-        }
 
-        //check code
-        for(int i = 0; i < 4; i++){
-            if(userInput[i] == secretCode[i]){
-                correctPositions+=1;
-                correctInputs[i] = 1;
+        for(int i = 0; i < userInput.length; i++){
+            if(userInput[i] == secretCode[i]) {
+                inputResult[i] = 2;
+                correctPositions += 1;
+                numQuantities[userInput[i]] -= 1;
             }
-            //1 = correct pos, > 0 will reduce
-            else if(secretNums[userInput[i]] > 0){
-                correctDigits+=1;
-                if(secretNums[userInput[i]] > 1){
-                    correctInputs[i] = 2;
-                }
-                else {
-                    correctInputs[i] = 3;
-                }
+        }
+        for(int i = 0; i < userInput.length; i++){
+            if (numQuantities[userInput[i]] > 0) {
+                inputResult[i] = 1;
+                correctDigits += 1;
+                numQuantities[userInput[i]] -= 1;
             }
         }
 
@@ -80,11 +78,7 @@ public class MasterMind {
         }
         return "You do not have the right";
     }
-//    private void generateSecretCode(int num){
-//        String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
-//        OkHttpClient client = new OkHttpClient();
-//
-//    }
+
 
     private void generateSecretCode(int numberOfDigits){ //take out as own class
         String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
@@ -103,7 +97,8 @@ public class MasterMind {
                             secretCode[i] = Character.getNumericValue((responseString.charAt(i)));
                         }
                         for (int i = 0; i < 4; i++) {
-                            secretNums[secretCode[i]] += 1;//bitmap overkill, can simplify to checking index , dictionary/ keyvalue par, keep index in mind and looking forwrd
+                            secretNums[secretCode[i]] += 1;
+                            //bitmap overkill, can simplify to checking index , dictionary/ keyvalue par, keep index in mind and looking forwrd
                         }
                         signalOnResponse.onSuccess(response);
                     }
