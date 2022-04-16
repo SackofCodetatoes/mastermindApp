@@ -1,3 +1,27 @@
+Planned Implementations
+- secret nums bitmap implementation can be changed ot be simpler check in mastermind class
+- response parsing is redundant, can be simplified (mastermind.checkCode());
+- test and get feedback
+- customize display so it doesnt look so default
+? add start screen to provide game instructions
+- factor in horizontal mode (test on different device sizes)
+- factor in customization (code length, number of attempts)
+- add in end screen
+- add some effects (audio + animation on win, etc)
+
+notes;
+//do doc strings to be more readability, there are built in functions Java docstring style copy that //comment only if confusing or esoteric code smell
+//the use of secretNums bitmap overkill, can simplify to checking index , dictionary/ keyvalue par, keep index in mind and looking forwrd
+
+look at unit tests and testing specific units of the code
+single responsibility principle - code does specific things
+is this part of my code doing exactly what i expecting it to do
+can decompose - is random number generator
+helps break down the code and helps towards correctness
+end to end test - see if all the parts fit together and test the components individually
+
+=============================================================================================================================
+
 Wednesday Goals
 - add difficulty setting
     x add difficulty buttons
@@ -27,45 +51,26 @@ Wednesday Goals
         - simplify the attempts record with colors based on difficulty
         x reveal only as many letters as there is, wordle example
         x go through priority (colorize correct position and number first before secondary colorization) (PRIORITY)
-        x fix easy mode / adjust
+        x fix easy mode / adjust (removed )
 
         x implement a screen manager to handle the screen items
 
 - shift UI around to be more user friendly
-- customize display so it doesnt look so default
 
-? add start screen to provide game instructions
-- factor in horizontal mode (test on different device sizes)
-- factor in customization (code length, number of attempts)
-- add in end screen
-- add some effects (audio + animation on win, etc)
 
 Thursday
-- gitignore logs and all other info not pertaining to the project
-- remove comments unless code segments are confusing
-- make corrections
+? gitignore logs and all other info not pertaining to the project
+? remove comments unless code segments are confusing
+x make corrections
 
-- remove debugging messages
-- refactor and cleanup any messy code
-- move some code to different files
-- test and get feedback
+? remove debugging messages
+x refactor and cleanup any messy code
+x move some code to different files
 
-look at unit tests and testing specific units of the code
-single responsibility principle - code does specific things
-is this part of my code doing exactly what i expecting it to do
-can decompose - is random number generator
-helps break down the code and helps towards correctness
-end to end test - see if all the parts fit together and test the components individually
 
 java
 remove logs- remove error log files from github
 almost never have global variables, pass individual elements across difficult to contro
 hin difficulty
 array of 4 ids
-seperarte different classes
-
-really seperate all the class
-
-notes;
-//do doc strings to be more readability, there are built in functions Java docstring style copy that //comment only if confusing or esoteric code smell
 

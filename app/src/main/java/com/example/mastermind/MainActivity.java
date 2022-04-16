@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(String response) {
-                //do these to allow retry
+                //todo: implement method to enable a retry init button
                 textDisplay.setText("Code could not be generated");
             }
         };
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 initGameLayoutButtons();
                 toggleButtons(0);
                 tryButton.setVisibility(View.VISIBLE);
-                gameInstance.initialize(selectedDifficulty, numOfNums);
+                gameInstance.initialize(numOfNums);
 
                 break;
             case 2:
@@ -76,9 +76,10 @@ public class MainActivity extends AppCompatActivity {
     }
     void updateView(){
         String result = new String("the impending result is this");
+        colorNumberPickers(inputResult);
 
         if(gameInstance.gameOver){
-            //1 - gameover, do gameover popup and options
+            //todo: change end screen to pop up modal with semi transparent white background with game state, stats, and option buttons
             if(gameInstance.correctPositions == 4){
                 textDisplay.setText("You won! Play again?");
             }
@@ -87,10 +88,9 @@ public class MainActivity extends AppCompatActivity {
             }
             tryButton.setVisibility(View.INVISIBLE);
             restartButton.setVisibility(View.VISIBLE);
-            //change pop up modal with semi transparent white background with game state, stats, and option buttons
             //toggleButtons(1); should be handled on main activity
         }
-        else{            //check result, need to print simpler method of hints?
+        else{
             if(gameInstance.correctPositions > 0){
                 textDisplay.setText("Player guessed a correct number and position. Try again");
                 result = " correct #(s) in position";
@@ -101,14 +101,15 @@ public class MainActivity extends AppCompatActivity {
                 textDisplay.setText("No correct guesses. Try again");
                 result = " no correct #(s)";
             }
-            colorNumberPickers(inputResult);
         }
         attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
+        //todo: simplify recorded guesses
         recordedAttempts.append("" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
         textRecord.setText((recordedAttempts));
     }
 
     void toggleButtons(int onOff){
+        //used in old implementation to show buttons clicker view, not currently used
         if(onOff == 0){
             difficultyButtonsGroup.setVisibility(View.INVISIBLE);
             difficultyButtonsGroup.setEnabled(false);
@@ -125,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
         }
-        Log.d("Sanity check on inputResult ", Arrays.toString(inputResult));
 
         switch(selectedDifficulty){
             case 0:
@@ -141,25 +141,13 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                 }
-//                for(int i = 0; i < correctInputs.length; i++) {
-//                    if (correctInputs[i] == 1) {
-//                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
-//                        //correctMultiples[userInput[i]] -= 1;
-//                    }
-//                }
-//                for(int i = 0; i < correctInputs.length; i++){
-//                    if(correctMultiples[userInput[i]] > 0 && correctInputs[i] != 1){
-//                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
-//                        correctMultiples[userInput[i]] -= 1;
-//                    }
-//                }
                 break;
+
             case 1:
                 //make a better ui to indicate difficult hints
                 if(gameInstance.correctPositions > 0){
-                    //color whole wheel in green
+                    //color aqua
                     for(int i = 0; i < numberPickers.length; i++) {
-//                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
                         numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
                     }
                 }
@@ -213,14 +201,12 @@ public class MainActivity extends AppCompatActivity {
 
         tryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //check clickers for input and do game check and respond
                 userInput = new int[numOfNums];
                 for(int i = 0; i < userInput.length; i++){
                     userInput[i] = numberPickers[i].getValue();
                 }
                 inputResult = gameInstance.checkCode(userInput);
                 updateView();
-                //run method to update gamestate on screen, looks int gameInstance object to print and stuff
             }
         });
         restartButton.setOnClickListener(new View.OnClickListener(){
@@ -228,13 +214,11 @@ public class MainActivity extends AppCompatActivity {
                 contentViewSwitcher(0);
             }
         });
-
-
         normalButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 selectedDifficulty = 0;
                 toggleButtons(0);
-                gameInstance.initialize(selectedDifficulty, numOfNums);
+                gameInstance.initialize(numOfNums);
 
             }
         });
@@ -242,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 selectedDifficulty = 1;
                 toggleButtons(0);
-                gameInstance.initialize(selectedDifficulty, numOfNums);
+                gameInstance.initialize(numOfNums);
             }
         });
     }

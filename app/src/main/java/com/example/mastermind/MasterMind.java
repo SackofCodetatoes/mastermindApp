@@ -13,9 +13,9 @@ import java.util.HashMap;
 
 
 public class MasterMind {
-    private int[] secretCode = {1, 2, 3, 4}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0}, correctInputs = {0, 0, 0, 0};
-    private String responseString, result;
-    int attemptsRemaining = 10, correctDigits = 0, correctPositions = 0, difficulty = 0;
+    private int[] secretCode = {1, 2, 3, 4}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0};
+    private String responseString;
+    int attemptsRemaining = 10, correctDigits = 0, correctPositions = 0;
     boolean gameOver = false;
     Context mainContext;
     ServerCallback signalOnResponse;
@@ -24,7 +24,7 @@ public class MasterMind {
         mainContext = fromWhere;
         signalOnResponse = callOnSuccess;
     }
-    void initialize(int selectedDifficulty, int numberOfDigits){
+    void initialize(int numberOfDigits){
         gameOver = false;
         attemptsRemaining = 10;
         for(int i = 0; i < secretNums.length; i++) {
@@ -35,13 +35,10 @@ public class MasterMind {
 
 
     int[] checkCode(int[] userInput){
-        //take user input and return a result format of [0, 1, 2, 0], 0 is not found, 1 is in code but not right place, 2 is correct place]
-        //will do heavy lifting of determining if usercode has these responses
         int[] inputResult = {0,0,0,0};
         int[] numQuantities = secretNums.clone();
         correctPositions = 0;
         correctDigits = 0;
-
 
         for(int i = 0; i < userInput.length; i++){
             if(userInput[i] == secretCode[i]) {
@@ -51,7 +48,7 @@ public class MasterMind {
             }
         }
         for(int i = 0; i < userInput.length; i++){
-            if (numQuantities[userInput[i]] > 0) {
+            if (numQuantities[userInput[i]] > 0 && inputResult[i] == 0) {
                 inputResult[i] = 1;
                 correctDigits += 1;
                 numQuantities[userInput[i]] -= 1;
@@ -65,7 +62,7 @@ public class MasterMind {
         if(attemptsRemaining <= 0){
             gameOver = true;
         }
-
+        Log.d("secretNums is : ", Arrays.toString(secretNums));
         Log.d("secret code", "" + secretCode[0] + secretCode[1] + secretCode[2] + secretCode[3]);
         return inputResult;
     }
@@ -87,27 +84,23 @@ public class MasterMind {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("Http Request ", "Game is Ready");
 
                         Log.d("Response", "" + Arrays.toString(response.split("\n")));
-//                        int[] secretCodeResponse = response.split("\n"); //implment this
+//                        int[] secretCodeResponse = response.split("\n"); //implment this / clean up response parsing
                         responseString = response.substring(0, 8);
                         responseString = responseString.replaceAll("[^0-7]", "");//redundant, put
                         for (int i = 0; i < responseString.length(); i++) {
                             secretCode[i] = Character.getNumericValue((responseString.charAt(i)));
-                        }
-                        for (int i = 0; i < 4; i++) {
                             secretNums[secretCode[i]] += 1;
-                            //bitmap overkill, can simplify to checking index , dictionary/ keyvalue par, keep index in mind and looking forwrd
                         }
+
                         signalOnResponse.onSuccess(response);
                     }
                 }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("Http Request: ","Something went wrong with code generation :(");
-                //try again callback?
-
+                signalOnResponse.onFailure("Request could not be completed.");
             }
         });
         queue.add(stringRequest);
