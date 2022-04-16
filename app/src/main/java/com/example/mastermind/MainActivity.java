@@ -33,15 +33,21 @@ public class MainActivity extends AppCompatActivity {
         );
 
         contentViewSwitcher(0);
-        ServerCallback callback = new ServerCallback() {
+        ServerCallback enableButtonOnSuccess = new ServerCallback() {
             @Override
             public void onSuccess(String response) {
-//                tryButton = findViewById(R.id.button_main_clicker);
                 textDisplay.setText("Game is Ready!");
                 tryButton.setEnabled(true);
             }
+
+            @Override
+            public void onFailure(String response) {
+                //do these to allow retry
+                textDisplay.setText("Code could not be generated");
+            }
         };
-        gameInstance = new MasterMind(this, callback);
+
+        gameInstance = new MasterMind(this, enableButtonOnSuccess);
     }
 
     void contentViewSwitcher(int viewTarget){
@@ -57,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 toggleButtons(0);
                 tryButton.setVisibility(View.VISIBLE);
                 gameInstance.initialize(selectedDifficulty, numOfNums);
-//                tryButton.setEnabled(true);
+
                 break;
             case 2:
                 setContentView(R.layout.activity_gameover);
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
     void updateView(){
         String result = new String("the impending result is this");
+
         if(gameInstance.gameOver){
             //1 - gameover, do gameover popup and options
             if(gameInstance.correctPositions == 4){
@@ -96,9 +103,6 @@ public class MainActivity extends AppCompatActivity {
         attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
         recordedAttempts.append("" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
         textRecord.setText((recordedAttempts));
-
-        //look at game instance object and update screen appropriately, 3 different results,
-        //2 - game is ongoing, update gamelayout and do colorize
     }
 
     void toggleButtons(int onOff){

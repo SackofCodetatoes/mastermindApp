@@ -17,11 +17,11 @@ public class MasterMind {
     int attemptsRemaining = 10, correctDigits = 0, correctPositions = 0, difficulty = 0;
     boolean gameOver = false;
     Context mainContext;
-    ServerCallback signalWhenReady;
+    ServerCallback signalOnResponse;
 
-    public MasterMind(Context fromWhere, ServerCallback callback){
+    public MasterMind(Context fromWhere, ServerCallback callOnSuccess){
         mainContext = fromWhere;
-        signalWhenReady = callback;
+        signalOnResponse = callOnSuccess;
     }
     void initialize(int selectedDifficulty, int numberOfDigits){
         gameOver = false;
@@ -105,13 +105,14 @@ public class MasterMind {
                         for (int i = 0; i < 4; i++) {
                             secretNums[secretCode[i]] += 1;//bitmap overkill, can simplify to checking index , dictionary/ keyvalue par, keep index in mind and looking forwrd
                         }
-                        signalWhenReady.onSuccess(response);
+                        signalOnResponse.onSuccess(response);
                     }
                 }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("Http Request: ","Something went wrong with code generation :(");
                 //try again callback?
+
             }
         });
         queue.add(stringRequest);
