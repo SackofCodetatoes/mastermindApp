@@ -27,9 +27,7 @@ public class MasterMind {
     void initialize(int numberOfDigits){
         gameOver = false;
         attemptsRemaining = 10;
-        for(int i = 0; i < secretNums.length; i++) {
-            secretNums[i] = 0;
-        }
+        Arrays.fill(secretNums, 0);
         generateSecretCode(numberOfDigits);
     }
 

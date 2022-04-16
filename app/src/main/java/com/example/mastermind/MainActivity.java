@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     void updateView(){
-        String result = new String("the impending result is this");
+        String result = "the impending result is this";
         colorNumberPickers(inputResult);
 
         if(gameInstance.gameOver){
