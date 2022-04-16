@@ -12,25 +12,36 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private Button tryButton, normalButton, mediumButton, hardButton;
+    private Button tryButton, normalButton, mediumButton, hardButton, restartButton;
     private Button menuNormalButton, menuHardButton, menuStartButton;
     private TextView textDisplay, attemptsDisplay, textRecord;
     NumberPicker[] numberPickers = new NumberPicker[4];
+    StringBuilder recordedAttempts = new StringBuilder(500);
     private Group difficultyButtonsGroup, numberPickersGroup;
+    int[] userInput, inputResult;
     int selectedDifficulty, numOfNums = 4;//refactor later
     MasterMind gameInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gameInstance = new MasterMind(this);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-        contentViewSwitcher(0);
 
+        contentViewSwitcher(0);
+        ServerCallback callback = new ServerCallback() {
+            @Override
+            public void onSuccess(String response) {
+//                tryButton = findViewById(R.id.button_main_clicker);
+                textDisplay.setText("Game is Ready!");
+                tryButton.setEnabled(true);
+            }
+        };
+        gameInstance = new MasterMind(this, callback);
     }
 
     void contentViewSwitcher(int viewTarget){
@@ -44,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
                 initGameLayoutInterface();
                 initGameLayoutButtons();
                 toggleButtons(0);
+                tryButton.setVisibility(View.VISIBLE);
                 gameInstance.initialize(selectedDifficulty, numOfNums);
+//                tryButton.setEnabled(true);
                 break;
             case 2:
                 setContentView(R.layout.activity_gameover);
@@ -53,10 +66,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     void updateView(){
+        String result = new String("the impending result is this");
+        if(gameInstance.gameOver){
+            //1 - gameover, do gameover popup and options
+            if(gameInstance.correctPositions == 4){
+                textDisplay.setText("You won! Play again?");
+            }
+            else {
+                textDisplay.setText("Gameover. Secret code was " + gameInstance.revealCode());
+            }
+            tryButton.setVisibility(View.INVISIBLE);
+            restartButton.setVisibility(View.VISIBLE);
+            //change pop up modal with semi transparent white background with game state, stats, and option buttons
+            //toggleButtons(1); should be handled on main activity
+        }
+        else{            //check result, need to print simpler method of hints?
+            if(gameInstance.correctPositions > 0){
+                textDisplay.setText("Player guessed a correct number and position. Try again");
+                result = " correct #(s) in position";
+            } else if(gameInstance.correctDigits > 0) {
+                textDisplay.setText("Player guessed a correct number. Try again");
+                result = " correct #(s)";
+            } else {
+                textDisplay.setText("No correct guesses. Try again");
+                result = " no correct #(s)";
+            }
+            colorNumberPickers(inputResult);
+        }
+        attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
+        recordedAttempts.append("" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
+        textRecord.setText((recordedAttempts));
+
         //look at game instance object and update screen appropriately, 3 different results,
-        //1 - gameover, do gameover popup and options
         //2 - game is ongoing, update gamelayout and do colorize
-        //
     }
 
     void toggleButtons(int onOff){
@@ -80,19 +122,19 @@ public class MainActivity extends AppCompatActivity {
 
         switch(selectedDifficulty){
             case 0:
-                for(int i = 0; i < correctInputs.length; i++) {
-                    if (correctInputs[i] == 1) {
-                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
-                        correctMultiples[userInput[i]] -= 1;
-                    }
-                }
-                for(int i = 0; i < correctInputs.length; i++){
-                    if(correctMultiples[userInput[i]] > 0 && correctInputs[i] != 1){
-                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
-                        correctMultiples[userInput[i]] -= 1;
-                    }
-                }
-                break;
+//                for(int i = 0; i < correctInputs.length; i++) {
+//                    if (correctInputs[i] == 1) {
+//                        numberPickers[i].setBackgroundColor(Color.rgb(71, 201, 132));
+//                        //correctMultiples[userInput[i]] -= 1;
+//                    }
+//                }
+//                for(int i = 0; i < correctInputs.length; i++){
+//                    if(correctMultiples[userInput[i]] > 0 && correctInputs[i] != 1){
+//                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
+//                        correctMultiples[userInput[i]] -= 1;
+//                    }
+//                }
+//                break;
             case 1:
                 //make a better ui to indicate difficult hints
                 if(gameInstance.correctPositions > 0){
@@ -144,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
 
     void initGameLayoutButtons(){
         tryButton = findViewById(R.id.button_main_clicker);
+        restartButton = findViewById(R.id.button_main_restart);
+
         normalButton = findViewById(R.id.button_main_easy);
         hardButton = findViewById(R.id.button_main_hard);
         difficultyButtonsGroup = findViewById(R.id.difficulty_main_group);
@@ -151,14 +195,22 @@ public class MainActivity extends AppCompatActivity {
         tryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //check clickers for input and do game check and respond
-                int[] userInput = new int[numOfNums];
+                userInput = new int[numOfNums];
                 for(int i = 0; i < userInput.length; i++){
                     userInput[i] = numberPickers[i].getValue();
                 }
-                gameInstance.checkCode(userInput);
+                inputResult = gameInstance.checkCode(userInput).clone();
+                updateView();
                 //run method to update gamestate on screen, looks int gameInstance object to print and stuff
             }
         });
+        restartButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                contentViewSwitcher(0);
+            }
+        });
+
+
         normalButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 selectedDifficulty = 0;
@@ -192,6 +244,6 @@ public class MainActivity extends AppCompatActivity {
         textDisplay.setText(("Guess a 4 digit combination"));
         textRecord = findViewById(R.id.text_main_record);
         attemptsDisplay = findViewById(R.id.text_main_attempts);
-
+        attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
     }
 }

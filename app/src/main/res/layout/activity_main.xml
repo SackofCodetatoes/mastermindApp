@@ -46,6 +46,18 @@
         app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
 
     <Button
+        android:id="@+id/button_main_restart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="368dp"
+        android:text="Restart Game"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_hard"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_easy"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/button_main_clicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
