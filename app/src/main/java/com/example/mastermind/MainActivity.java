@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
             numberPickers[i] = findViewById(pickerIDs[i]);
             numberPickers[i].setMaxValue(7);
             numberPickers[i].setMinValue(0);
-//            numberPickers[i].setDisplayedValues(pickerVals);
+            numberPickers[i].setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         }
 
 
