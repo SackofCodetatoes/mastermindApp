@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
             numberPickers[i] = findViewById(pickerIDs[i]);
             numberPickers[i].setMaxValue(7);
             numberPickers[i].setMinValue(0);
-            numberPickers[i].setDisplayedValues(pickerVals);
+//            numberPickers[i].setDisplayedValues(pickerVals);
         }
         attemptsRecord = findViewById(R.id.scrollview_main_record);
         textDisplay = findViewById(R.id.text_main_display);
