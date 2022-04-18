@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private Button tryButton, normalButton, hardButton, restartButton, dynamicAddButton, menuDynamicButton,
-            keyBackButton, keyButton1, keyButton2;
+            keyBackButton, keyButton0, keyButton1, keyButton2;
     private Button[] keypadButtons = new Button[8];
     HorizontalScrollView scrollField;
     ScrollView attemptsRecord;
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 toggleButtons(0);
                 tryButton.setVisibility(View.VISIBLE);
                 gameInstance.initialize(numOfNums);
+                currentIndex = 0;
 
                 break;
             case 2:
@@ -240,23 +241,15 @@ public class MainActivity extends AppCompatActivity {
                 contentViewSwitcher(2);
             }
         });
-
-//        keyBackButton.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View v){
-//                numberPickers[currentIndex].setValue(0);
-//                if(currentIndex > 0){
-//                    currentIndex -= 1;
-//                }
-//            }
-//        });
     }
 
     void initGameLayoutButtons(){
+        int[] keypadIDS = {R.id.button_main_0, R.id.button_main_1, R.id.button_main_2};
         tryButton = findViewById(R.id.button_main_clicker);
         restartButton = findViewById(R.id.button_main_restart);
-
         normalButton = findViewById(R.id.button_main_easy);
         hardButton = findViewById(R.id.button_main_hard);
+
         difficultyButtonsGroup = findViewById(R.id.difficulty_main_group);
 
         tryButton.setOnClickListener(new View.OnClickListener(){
@@ -289,24 +282,43 @@ public class MainActivity extends AppCompatActivity {
                 gameInstance.initialize(numOfNums);
             }
         });
-    }
-
-    //create keyboard function to apply to each keypad button
-    void setKeypadFunction(Button setButton ,int value){
-        setButton.setOnClickListener(new View.OnClickListener(){
+        for(int i = 0; i < keypadIDS.length; i++){
+            keypadButtons[i] = findViewById(keypadIDS[i]);
+            setKeypadFunction(keypadButtons[i], i);
+        }
+        keyBackButton = findViewById(R.id.button_main_backspace);
+        keyBackButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if(currentIndex < 4){
-                    numberPickers[currentIndex].setValue(value);
-                    currentIndex+=1;
+                numberPickers[currentIndex].setValue(0);
+                if(currentIndex > 0){
+                    currentIndex -= 1;
                 }
             }
         });
     }
 
+
+    //create keyboard function to apply to each keypad button
+    void setKeypadFunction(Button setButton ,int value){
+
+        setButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                if(currentIndex < numOfNums){
+                    numberPickers[currentIndex].setValue(value);
+                    currentIndex+=1;
+                }
+                if(currentIndex >= numOfNums){
+                    currentIndex = numOfNums - 1;
+                }
+            }
+        });
+
+    }
+
+
     void initGameLayoutInterface(){
         String[] pickerVals = {"0", "1", "2", "3", "4", "5", "6", "7"};
-        int[] pickerIDs = {R.id.numberpicker_main_picker0, R.id.numberpicker_main_picker1, R.id.numberpicker_main_picker2, R.id.numberpicker_main_picker3},
-            keypadIDS = {R.id.button_main_0, R.id.button_main_1, R.id.button_main_2};
+        int[] pickerIDs = {R.id.numberpicker_main_picker0, R.id.numberpicker_main_picker1, R.id.numberpicker_main_picker2, R.id.numberpicker_main_picker3};
         numberPickersGroup = findViewById(R.id.numberpickers_main_group);
 
         for(int i = 0; i < pickerIDs.length; i++){
@@ -315,24 +327,19 @@ public class MainActivity extends AppCompatActivity {
             numberPickers[i].setMinValue(0);
             numberPickers[i].setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
             //add on change listener to change current index to i+1 unless it is pickerID length
-//            final int setIndex = i;
-//            if(i < pickerIDs.length - 1){
-//                numberPickers[i].setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
-//                    @Override
-//                    public  void onValueChange(NumberPicker np, int before, int after){
-//                        //increment current index to next position from current, I
-//                        currentIndex = setIndex + 1;
-//                    }
-//
-//                });
-//            }
+            final int setIndex = i;
+            if(i < pickerIDs.length - 1){
+                numberPickers[i].setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+                    @Override
+                    public  void onValueChange(NumberPicker np, int before, int after){
+                        //increment current index to next position from current, I
+                        currentIndex = setIndex + 1;
+                    }
+
+                });
+            }
         }
-//        keypadButtons[0].findViewById(keypadIDS[0]);
-//        for(int i = 0; i < keypadIDS.length; i++){
-//            keypadButtons[i].findViewById(keypadIDS[i]);
-////            setKeypadFunction(keypadButtons[i], i);
-//        }
-//        keyBackButton.findViewById(R.id.button_main_backspace);
+
 
         attemptsRecord = findViewById(R.id.scrollview_main_record);
         textDisplay = findViewById(R.id.text_main_display);
