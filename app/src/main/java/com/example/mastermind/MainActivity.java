@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(gameInstance.gameOver){
             //todo: change end screen to pop up modal with semi transparent white background with game state, stats, and option buttons
+            victoryPopup(findViewById(R.id.text_main_attempts));
             if(gameInstance.correctPositions == 4){
                 textDisplay.setText("You won! Play again?");
             }
@@ -179,6 +184,34 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.addView(btn, buttonlayout);
     }
 
+    void victoryPopup(View view){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_window, null);
+        String manualResultCheck = "Game Over";
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; //dismiss popout on clicking outside according to notes
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        //show popup window which view passed doesnt matter, just a token
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+//        TextView resultMessage = findViewById(R.id.text_popup_result);
+        if(gameInstance.correctPositions == 4){
+            manualResultCheck = "You Win!";
+        }
+//        resultMessage.setText(manualResultCheck);
+
+        //dusnuss popup when tocuhed, might remove
+//        popupView.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public  boolean onTouch(View v, MotionEvent event){
+//                popupWindow.dismiss();
+//                return true;
+//            }
+//        });
+
+
+    }
 
     void initDynamicLayout(){
         scrollField = findViewById(R.id.scroll_field);
