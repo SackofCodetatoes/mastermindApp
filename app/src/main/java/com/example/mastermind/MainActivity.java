@@ -182,14 +182,7 @@ public class MainActivity extends AppCompatActivity {
         }
 //        resultMessage.setText(manualResultCheck);
 
-        //dusnuss popup when tocuhed, might remove
-//        popupView.setOnTouchListener(new View.OnTouchListener(){
-//            @Override
-//            public  boolean onTouch(View v, MotionEvent event){
-//                popupWindow.dismiss();
-//                return true;
-//            }
-//        });
+
     }
 
     void initMenuLayoutButtons(){

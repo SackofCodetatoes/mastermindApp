@@ -23,13 +23,13 @@
         android:id="@+id/button_main_restart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="9dp"
         android:text="Restart Game"
         android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/button_main_hard"
-        app:layout_constraintHorizontal_bias="0.153"
-        app:layout_constraintStart_toEndOf="@+id/button_main_easy"
-        app:layout_constraintTop_toTopOf="@+id/text_main_display" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
 
     <Button
         android:id="@+id/button_main_clicker"
@@ -73,6 +73,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/numberpicker_main_picker0"
         app:layout_constraintTop_toTopOf="parent" />
+
     <NumberPicker
         android:id="@+id/numberpicker_main_picker2"
         style="@style/CustomPicker"
@@ -81,6 +82,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/numberpicker_main_picker1"
         app:layout_constraintTop_toTopOf="parent" />
+
     <NumberPicker
         android:id="@+id/numberpicker_main_picker3"
         style="@style/CustomPicker"

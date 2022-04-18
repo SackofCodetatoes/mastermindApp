@@ -2,8 +2,11 @@ Planned Implementations
 - secret nums bitmap implementation can be changed ot be simpler check in mastermind class
 - code cleanup. response parsing is redundant, can be simplified (mastermind.checkCode());
 - test and get feedback
-    - implement focus shifting if using keypad/keyboard to provide additional user input methods
-    - add wordle like interfaces, black out incorrect numbers, leader board at end screen, some type of response on hard difficulty
+    x implement focus shifting if using keypad/keyboard to provide additional user input methods
+    ? add wordle like interfaces,
+        - black out incorrect numbers
+        - leader board at end screen
+        - some type of response on hard difficulty
 
 - customize display so it doesnt look default
 ? add start screen to provide game instructions
@@ -85,7 +88,15 @@ x move some code to different files
 
 java
 remove logs- remove error log files from github
-almost never have global variables, pass individual elements across difficult to contro
+almost never have global variables, pass individual elements across difficult to control
 hin difficulty
 array of 4 ids
 
+        //dismiss popup when touched, might remove
+//        popupView.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public  boolean onTouch(View v, MotionEvent event){
+//                popupWindow.dismiss();
+//                return true;
+//            }
+//        });
