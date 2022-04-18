@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,15 +20,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private Button tryButton, normalButton, hardButton, restartButton, dynamicAddButton, menuDynamicButton,
-            keyBackButton, keyButton0, keyButton1, keyButton2;
+    private Button tryButton, normalButton, hardButton, restartButton, keyBackButton;
     private Button[] keypadButtons = new Button[8];
     HorizontalScrollView scrollField;
     ScrollView attemptsRecord;
     private Button menuNormalButton, menuHardButton, menuStartButton;
     private TextView textDisplay, attemptsDisplay, textRecord;
     NumberPicker[] numberPickers = new NumberPicker[4];
-//    StringBuilder previousGuesses = new StringBuilder(500);
     private Group difficultyButtonsGroup, numberPickersGroup;
     int[] userInput, inputResult;
     int selectedDifficulty, numOfNums = 4, currentIndex = 0;//refactor later
@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 setContentView(R.layout.dynamic_testing);
-                initDynamicLayout();
                 //init text and buttons
                 break;
         }
@@ -97,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
             }
             tryButton.setVisibility(View.INVISIBLE);
             restartButton.setVisibility(View.VISIBLE);
-//            previousGuesses.delete(0, previousGuesses.length());
             //toggleButtons(1); should be handled on main activity
         }
         else{
@@ -179,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
         //show popup window which view passed doesnt matter, just a token
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-//        TextView resultMessage = findViewById(R.id.text_popup_result);
         if(gameInstance.correctPositions == 4){
             manualResultCheck = "You Win!";
         }
@@ -193,25 +190,12 @@ public class MainActivity extends AppCompatActivity {
 //                return true;
 //            }
 //        });
-
-
     }
 
-    void initDynamicLayout(){
-        scrollField = findViewById(R.id.scroll_field);
-        dynamicAddButton = findViewById(R.id.button_menu_dynamic);
-//        dynamicAdd(2);
-//        dynamicAddButton.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View v){
-//                dynamicAdd(2);
-//            }
-//        });
-    }
     void initMenuLayoutButtons(){
         menuStartButton = findViewById(R.id.button_menu_start);
         menuNormalButton = findViewById(R.id.button_menu_normal);
         menuHardButton = findViewById(R.id.button_menu_hard);
-        menuDynamicButton = findViewById(R.id.button_menu_dynamic);
 
         menuNormalButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -236,15 +220,11 @@ public class MainActivity extends AppCompatActivity {
                 contentViewSwitcher(1);
             }
         });
-        menuDynamicButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                contentViewSwitcher(2);
-            }
-        });
     }
 
     void initGameLayoutButtons(){
-        int[] keypadIDS = {R.id.button_main_0, R.id.button_main_1, R.id.button_main_2};
+        int[] keypadIDS = {R.id.button_main_0, R.id.button_main_1, R.id.button_main_2,R.id.button_main_3, R.id.button_main_4, R.id.button_main_5,
+                R.id.button_main_6, R.id.button_main_7};
         tryButton = findViewById(R.id.button_main_clicker);
         restartButton = findViewById(R.id.button_main_restart);
         normalButton = findViewById(R.id.button_main_easy);
@@ -259,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                     userInput[i] = numberPickers[i].getValue();
                 }
                 inputResult = gameInstance.checkCode(userInput);
+                currentIndex = 0;
                 updateView();
             }
         });
@@ -297,14 +278,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     //create keyboard function to apply to each keypad button
-    void setKeypadFunction(Button setButton ,int value){
-
+    void setKeypadFunction(Button setButton, int value){
         setButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if(currentIndex < numOfNums){
                     numberPickers[currentIndex].setValue(value);
+
                     currentIndex+=1;
                 }
                 if(currentIndex >= numOfNums){
@@ -312,9 +292,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
-
 
     void initGameLayoutInterface(){
         String[] pickerVals = {"0", "1", "2", "3", "4", "5", "6", "7"};
@@ -333,13 +311,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public  void onValueChange(NumberPicker np, int before, int after){
                         //increment current index to next position from current, I
+                        numberPickers[setIndex].setBackgroundColor(Color.TRANSPARENT);
+                        Log.d("change happened", "oh nyo");
                         currentIndex = setIndex + 1;
                     }
-
                 });
             }
         }
-
 
         attemptsRecord = findViewById(R.id.scrollview_main_record);
         textDisplay = findViewById(R.id.text_main_display);
