@@ -23,6 +23,11 @@
 
     <!--    screen main -->
 
+<!--    <EditText-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:layout_editor_absoluteX="38dp"-->
+<!--        tools:layout_editor_absoluteY="80dp" />-->
 
     <Button
         android:id="@+id/button_main_easy"

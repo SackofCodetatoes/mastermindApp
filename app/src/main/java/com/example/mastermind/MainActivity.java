@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,8 +14,6 @@ import android.widget.NumberPicker;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.Arrays;
-
 public class MainActivity extends AppCompatActivity {
     private Button tryButton, normalButton, mediumButton, hardButton, restartButton, dynamicAddButton, menuDynamicButton;
     HorizontalScrollView scrollField;
@@ -24,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private Button menuNormalButton, menuHardButton, menuStartButton;
     private TextView textDisplay, attemptsDisplay, textRecord;
     NumberPicker[] numberPickers = new NumberPicker[4];
-    StringBuilder recordedAttempts = new StringBuilder(500);
+//    StringBuilder previousGuesses = new StringBuilder(500);
     private Group difficultyButtonsGroup, numberPickersGroup;
     int[] userInput, inputResult;
     int selectedDifficulty, numOfNums = 4;//refactor later
@@ -81,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     void updateView(){
-        String result = "the impending result is this";
         colorNumberPickers(inputResult);
 
         if(gameInstance.gameOver){
@@ -94,24 +90,21 @@ public class MainActivity extends AppCompatActivity {
             }
             tryButton.setVisibility(View.INVISIBLE);
             restartButton.setVisibility(View.VISIBLE);
+//            previousGuesses.delete(0, previousGuesses.length());
             //toggleButtons(1); should be handled on main activity
         }
         else{
             if(gameInstance.correctPositions > 0){
                 textDisplay.setText("Player guessed a correct number and position. Try again");
-                result = " correct #(s) in position";
             } else if(gameInstance.correctDigits > 0) {
                 textDisplay.setText("Player guessed a correct number. Try again");
-                result = " correct #(s)";
             } else {
                 textDisplay.setText("No correct guesses. Try again");
-                result = " no correct #(s)";
             }
         }
         attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
-        //todo: simplify recorded guesses
-        recordedAttempts.append("" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
-        textRecord.setText((recordedAttempts));
+
+        textRecord.setText((gameInstance.previousGuesses));
         attemptsRecord.fullScroll(View.FOCUS_DOWN);
     }
 
@@ -284,6 +277,8 @@ public class MainActivity extends AppCompatActivity {
             numberPickers[i].setMinValue(0);
 //            numberPickers[i].setDisplayedValues(pickerVals);
         }
+
+
         attemptsRecord = findViewById(R.id.scrollview_main_record);
         textDisplay = findViewById(R.id.text_main_display);
         textDisplay.setText(("Guess a 4 digit combination"));

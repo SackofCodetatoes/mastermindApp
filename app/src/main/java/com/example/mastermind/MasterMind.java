@@ -15,6 +15,7 @@ import java.util.HashMap;
 public class MasterMind {
     private int[] secretCode = {1, 2, 3, 4}, secretNums = {0, 0, 0, 0, 0, 0, 0, 0};
     private String responseString;
+    StringBuilder previousGuesses;
     int attemptsRemaining = 10, correctDigits = 0, correctPositions = 0;
     boolean gameOver = false;
     Context mainContext;
@@ -28,6 +29,7 @@ public class MasterMind {
         gameOver = false;
         attemptsRemaining = 10;
         Arrays.fill(secretNums, 0);
+        previousGuesses= new StringBuilder(500);
         generateSecretCode(numberOfDigits);
     }
 
@@ -35,6 +37,7 @@ public class MasterMind {
     int[] checkCode(int[] userInput){
         int[] inputResult = {0,0,0,0};
         int[] numQuantities = secretNums.clone();
+        String result = " no correct #(s)";
         correctPositions = 0;
         correctDigits = 0;
 
@@ -43,6 +46,9 @@ public class MasterMind {
                 inputResult[i] = 2;
                 correctPositions += 1;
                 numQuantities[userInput[i]] -= 1;
+                if(result == " no correct #(s)"){
+                    result = " correct #(s) & position";
+                }
             }
         }
         for(int i = 0; i < userInput.length; i++){
@@ -50,6 +56,9 @@ public class MasterMind {
                 inputResult[i] = 1;
                 correctDigits += 1;
                 numQuantities[userInput[i]] -= 1;
+                if(result == " no correct #(s)"){
+                    result = " correct #(s)";
+                }
             }
         }
 
@@ -60,6 +69,9 @@ public class MasterMind {
         if(attemptsRemaining <= 0){
             gameOver = true;
         }
+        //todo: simplify recorded guesses
+        previousGuesses.append("" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
+
         Log.d("secretNums is : ", Arrays.toString(secretNums));
         Log.d("secret code", "" + secretCode[0] + secretCode[1] + secretCode[2] + secretCode[3]);
         return inputResult;
