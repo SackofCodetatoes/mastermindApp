@@ -1,13 +1,23 @@
 Planned Implementations
 - secret nums bitmap implementation can be changed ot be simpler check in mastermind class
-- response parsing is redundant, can be simplified (mastermind.checkCode());
+- code cleanup. response parsing is redundant, can be simplified (mastermind.checkCode());
 - test and get feedback
+    - implement focus shifting if using keypad/keyboard to provide additional user input methods
+    - add wordle like interfaces, black out incorrect numbers, leader board at end screen, some type of response on hard difficulty
+
 - customize display so it doesnt look so default
 ? add start screen to provide game instructions
 - factor in horizontal mode (test on different device sizes)
 - factor in customization (code length, number of attempts)
-- add in end screen
+? add in end screen
+    - implement string variable for text to show message
+    - implement stats from game (worlde like stats, try again button. maybe best time?)
 - add some effects (audio + animation on win, etc)
+
+- suggestion: on hard, consume 1-2 attempts to provide a hint.
+    - add a hint button -> creates popup to confirm hint use
+- suggestion: some ui additions to show info has been updated
+    - ie. flash the text box / big -1 on attempts like damage counter / combine records display by appending the view above the guess (change number picker for editableText)
 
 notes;
 //do doc strings to be more readability, there are built in functions Java docstring style copy that //comment only if confusing or esoteric code smell
