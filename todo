@@ -2,9 +2,11 @@ Planned Implementations
 - secret nums bitmap implementation can be changed ot be simpler check in mastermind class
 - code cleanup. response parsing is redundant, can be simplified (mastermind.checkCode());
 - test and get feedback
-    x implement focus shifting if using keypad/keyboard to provide additional user input methods
+    x implement focus shifting if using keypad to provide additional user input methods
     ? add wordle like interfaces,
-        - black out incorrect numbers
+        - black out incorrect numbers (abstract keyboard functionality to another class)
+        - style keypad
+        - keypad press clears numberpicker color at start
         - leader board at end screen
         - some type of response on hard difficulty
 
