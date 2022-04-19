@@ -1,11 +1,12 @@
 package com.example.mastermind;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,9 +20,13 @@ import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     private Button tryButton, normalButton, hardButton, restartButton, keyBackButton;
     private Button[] keypadButtons = new Button[8];
+
     HorizontalScrollView scrollField;
     ScrollView attemptsRecord;
     private Button menuNormalButton, menuHardButton, menuStartButton;
@@ -29,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     NumberPicker[] numberPickers = new NumberPicker[4];
     private Group difficultyButtonsGroup, numberPickersGroup;
     int[] userInput, inputResult;
+    HashMap<Integer, String> results = new HashMap<Integer, String>();
+    HashMap<Integer, String> checkedNums = new HashMap<Integer, String>();
     int selectedDifficulty, numOfNums = 4, currentIndex = 0;//refactor later
     MasterMind gameInstance;
 
@@ -83,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     void updateView(){
-        colorNumberPickers(inputResult);
+        colorUI(inputResult);
 
         if(gameInstance.gameOver){
             //todo: change end screen to pop up modal with semi transparent white background with game state, stats, and option buttons
@@ -127,7 +134,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void colorNumberPickers(int[] inputResult){
+    void colorKeypad(HashMap<Integer, String> results){
+        Integer keyNum;
+        for(Map.Entry m : results.entrySet()){
+            keyNum = (int) m.getKey();
+            if (m.getValue() == "wrong") {
+                keypadButtons[keyNum].setBackgroundColor(Color.rgb(23, 23, 23));
+            } else if(m.getValue() == "found"){
+                keypadButtons[keyNum].setBackgroundColor(Color.rgb(209, 180, 48));
+            } else if(m.getValue() == "correct"){
+                keypadButtons[keyNum].setBackgroundColor(Color.rgb(71, 201, 132));
+            }
+        }
+    }
+
+    void colorUI(int[] inputResult){
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
         }
@@ -146,9 +167,11 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                 }
+                colorKeypad(gameInstance.guessResults(userInput));
                 break;
 
 //            case 1:
+            //draw box around all number pickers with a color indiciating result?
 //                //make a better ui to indicate difficult hints
 //                if(gameInstance.correctPositions > 0){
 //                    //color aqua
@@ -226,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         difficultyButtonsGroup = findViewById(R.id.difficulty_main_group);
 
         tryButton.setOnClickListener(new View.OnClickListener(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
             public void onClick(View v){
                 userInput = new int[numOfNums];
                 for(int i = 0; i < userInput.length; i++){
@@ -297,18 +321,32 @@ public class MainActivity extends AppCompatActivity {
             numberPickers[i].setMaxValue(7);
             numberPickers[i].setMinValue(0);
             numberPickers[i].setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-            //add on change listener to change current index to i+1 unless it is pickerID length
             final int setIndex = i;
-            if(i < pickerIDs.length - 1){
+            if(i < pickerIDs.length){
                 numberPickers[i].setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
                     @Override
                     public  void onValueChange(NumberPicker np, int before, int after){
-                        //increment current index to next position from current, I
                         numberPickers[setIndex].setBackgroundColor(Color.TRANSPARENT);
-                        Log.d("change happened", "oh nyo");
                         currentIndex = setIndex + 1;
+                        if(currentIndex >= numberPickers.length){
+                            currentIndex = numberPickers.length - 1;
+                        }
                     }
                 });
+                numberPickers[i].setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        numberPickers[setIndex].setBackgroundColor(Color.TRANSPARENT);
+                        currentIndex = setIndex;
+                        return false;
+                    }
+                });
+//                numberPickers[i].setOnClickListener(new View.OnClickListener(){
+//                    public void onClick(View v){
+//                        numberPickers[setIndex].setBackgroundColor(Color.TRANSPARENT);
+//                        currentIndex = setIndex;
+//                    }
+//                });
             }
         }
 

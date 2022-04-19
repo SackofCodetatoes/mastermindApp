@@ -20,6 +20,8 @@ public class MasterMind {
     boolean gameOver = false;
     Context mainContext;
     ServerCallback signalOnResponse;
+    HashMap<Integer, String> checkedNums;
+
 
     public MasterMind(Context fromWhere, ServerCallback callOnSuccess){
         mainContext = fromWhere;
@@ -31,8 +33,22 @@ public class MasterMind {
         Arrays.fill(secretNums, 0);
         previousGuesses= new StringBuilder(500);
         generateSecretCode(numberOfDigits);
+        checkedNums = new HashMap<Integer, String>();
     }
-
+    HashMap<Integer, String> guessResults(int[] userInput){
+        for(int i = 0; i < userInput.length; i++){
+            if(secretNums[userInput[i]] > 0 && !checkedNums.containsKey(userInput[i])) {
+                checkedNums.put(userInput[i], "found");
+            }
+            if(userInput[i] == secretCode[i]){
+                checkedNums.put(userInput[i], "correct");
+            }
+            if(secretNums[userInput[i]]==0){
+                checkedNums.put(userInput[i], "wrong");
+            }
+        }
+        return checkedNums;
+    }
 
     int[] checkCode(int[] userInput){
         int[] inputResult = {0,0,0,0};

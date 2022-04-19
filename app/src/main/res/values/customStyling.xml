@@ -4,7 +4,7 @@
         name="KeypadButton">
         <item
             name="android:backgroundTint"
-            >#4B5353</item>
+            >#B1BCBC</item>
         <item name="android:layout_width"
             >50dp</item>
         <item name="android:layout_height"

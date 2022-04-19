@@ -9,21 +9,10 @@
     tools:layout_editor_absoluteY="-40dp">
 
     <Button
-        android:id="@+id/button_main_easy"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#47c984"
-        android:text="Normal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
-
-    <Button
         android:id="@+id/button_main_restart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="180dp"
         android:text="Restart Game"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,25 +24,37 @@
         android:id="@+id/button_main_clicker"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="200dp"
         android:enabled="false"
         android:text="Try Code"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberpicker_main_picker2" />
+        app:layout_constraintTop_toTopOf="@+id/text_main_display" />
+
 
     <Button
         android:id="@+id/button_main_hard"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="264dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#fc431e"
         android:text="Hard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
 
+    <Button
+        android:id="@+id/button_main_easy"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="264dp"
+        android:backgroundTint="#47c984"
+        android:text="Normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_main_display" />
 
     <NumberPicker
         android:id="@+id/numberpicker_main_picker0"
@@ -160,107 +161,6 @@
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="numberpicker_main_picker1,text_main_attempts,button_main_hard,button_main_clicker,button_main_easy,text_main_display,numberpicker_main_picker0,numberpicker_main_picker2,scrollview_main_record, numberpicker_main_picker3" />
 
-    <Button
-        android:id="@+id/button_main_5"
-        style="@style/KeypadButton"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="5"
-        app:layout_constraintEnd_toStartOf="@+id/button_main_6"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_main_4"
-        app:layout_constraintTop_toBottomOf="@+id/button_main_2" />
-
-    <Button
-        android:id="@+id/button_main_backspace"
-        style="@style/KeypadButton"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:text="R"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_main_0"
-        app:layout_constraintTop_toBottomOf="@+id/button_main_6" />
-
-    <Button
-        android:id="@+id/button_main_2"
-        style="@style/KeypadButton"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
-        android:text="2"
-        app:layout_constraintEnd_toStartOf="@+id/button_main_3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_main_1"
-        app:layout_constraintTop_toTopOf="@+id/button_main_clicker" />
-
-    <Button
-        android:id="@+id/button_main_3"
-        style="@style/KeypadButton"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="80dp"
-        android:text="3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_main_2"
-        app:layout_constraintTop_toTopOf="@+id/button_main_clicker" />
-
-    <Button
-        android:id="@+id/button_main_4"
-        style="@style/KeypadButton"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:text="4"
-        app:layout_constraintEnd_toStartOf="@+id/button_main_5"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_main_1" />
-
-    <Button
-        android:id="@+id/button_main_7"
-        style="@style/KeypadButton"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:text="7"
-        app:layout_constraintEnd_toStartOf="@+id/button_main_0"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_main_4" />
-
-    <Button
-        android:id="@+id/button_main_1"
-        style="@style/KeypadButton"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="48dp"
-        android:text="1"
-        app:layout_constraintEnd_toStartOf="@+id/button_main_2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_main_clicker" />
-
-    <Button
-        android:id="@+id/button_main_0"
-        style="@style/KeypadButton"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="0"
-        app:layout_constraintEnd_toStartOf="@+id/button_main_backspace"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_main_7"
-        app:layout_constraintTop_toBottomOf="@+id/button_main_5" />
-
-    <Button
-        android:id="@+id/button_main_6"
-        style="@style/KeypadButton"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:text="6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_main_5"
-        app:layout_constraintTop_toBottomOf="@+id/button_main_3" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_keypad"
@@ -269,5 +169,118 @@
         app:constraint_referenced_ids="button_main_backspace,button_main_1,button_main_5,button_main_2,button_main_3,button_main_4,button_main_7,button_main_0,button_main_6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numberpicker_main_picker2" />
+
+
+    <Button
+        android:id="@+id/button_main_2"
+        style="@style/KeypadButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="2"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_1"
+        app:layout_constraintTop_toTopOf="@+id/text_main_display" />
+
+    <Button
+        android:id="@+id/button_main_6"
+        style="@style/KeypadButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="80dp"
+        android:text="6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_5"
+        app:layout_constraintTop_toBottomOf="@+id/button_main_3" />
+
+    <Button
+        android:id="@+id/button_main_backspace"
+        style="@style/KeypadButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="80dp"
+        android:text="R"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_0"
+        app:layout_constraintTop_toBottomOf="@+id/button_main_6" />
+
+    <Button
+        android:id="@+id/button_main_4"
+        style="@style/KeypadButton"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="4dp"
+        android:text="4"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_main_1" />
+
+    <Button
+        android:id="@+id/button_main_3"
+        style="@style/KeypadButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="80dp"
+        android:text="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_2"
+        app:layout_constraintTop_toTopOf="@+id/text_main_display" />
+
+    <Button
+        android:id="@+id/button_main_0"
+        style="@style/KeypadButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="0"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_backspace"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_7"
+        app:layout_constraintTop_toBottomOf="@+id/button_main_5" />
+
+    <Button
+        android:id="@+id/button_main_1"
+        style="@style/KeypadButton"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="40dp"
+        android:text="1"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_main_display" />
+
+    <Button
+        android:id="@+id/button_main_7"
+        style="@style/KeypadButton"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="4dp"
+        android:text="7"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_0"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_main_4" />
+
+    <Button
+        android:id="@+id/button_main_5"
+        style="@style/KeypadButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="5"
+        app:layout_constraintEnd_toStartOf="@+id/button_main_6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_main_4"
+        app:layout_constraintTop_toBottomOf="@+id/button_main_2" />
+
+    <view
+        android:id="@+id/view"
+        class="androidx.drawerlayout.widget.DrawerLayout"
+        android:layout_width="409dp"
+        android:layout_height="170dp"
+        android:layout_marginTop="30dp"
+        android:background="#656B6E"
+        app:layout_constraintTop_toTopOf="@+id/text_main_display"
+        tools:layout_editor_absoluteX="1dp"></view>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

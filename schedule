@@ -1,14 +1,19 @@
 4/18
-- add keypad blackout based on guesses
-- end game stats
-
 
 4/19
-- code cleanup
-- refine design
+x add keypad blackout based on guesses
+- add UI elements to inform player of how to play, intuitively
+    - add background color to the numbers in the recorded attempts
+    - highlight current index item (use border box around element)
+
+- end game stats
+    - attempts, graph
+- work on design / style
+    - add method to highlight currently focused entry (use currentIndex)
 
 
 4/20
+- code cleanup
 - work on readme
 - clean up
 
