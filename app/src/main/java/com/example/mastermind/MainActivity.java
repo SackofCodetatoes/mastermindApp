@@ -5,11 +5,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -98,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(gameInstance.gameOver){
             //todo: change end screen to pop up modal with semi transparent white background with game state, stats, and option buttons
-            victoryPopup(findViewById(R.id.text_main_attempts));
+            gameoverPopup(findViewById(R.id.text_main_attempts));
             if(gameInstance.correctPositions == 4){
                 textDisplay.setText("You won! Play again?");
             }
@@ -186,23 +183,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void victoryPopup(View view){
+    void gameoverPopup(View view){
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_window_constraint, null);
         String manualResultCheck = "Game Over";
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; //dismiss popout on clicking outside according to notes
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-        //show popup window which view passed doesnt matter, just a token
+        boolean focusable = true; //dismiss popup on clicking outside according to notes
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
+        TextView textEndResult = (TextView) popupWindow.getContentView().findViewById(R.id.text_popup_result);
         if(gameInstance.correctPositions == 4){
-            manualResultCheck = "You Win!";
+            textEndResult.setText("Good Job!");
         }
-//        resultMessage.setText(manualResultCheck);
-
-
+        else {
+            textEndResult.setText("Better Luck Next Time");
+        }
     }
 
     void initMenuLayoutButtons(){
