@@ -287,10 +287,10 @@
         android:id="@+id/view"
         class="androidx.drawerlayout.widget.DrawerLayout"
         android:layout_width="409dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="32dp"
         android:background="#656B6E"
         app:layout_constraintTop_toTopOf="@+id/text_main_display"
-        tools:layout_editor_absoluteX="1dp"></View>
+        tools:layout_editor_absoluteX="2dp"></View>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
