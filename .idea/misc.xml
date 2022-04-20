@@ -4,11 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/CodeStation7/AndroidStudioProjects/mastermind/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.356" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/bar.xml" value="0.356" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/correct_digit.xml" value="0.356" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/correct_digits.xml" value="0.356" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/correct_position.xml" value="0.356" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/correct_positions.xml" value="0.356" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/focus_border.xml" value="0.356" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/hard_guess_correct.xml" value="0.356" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.356" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/activity_gameover.xml" value="0.33" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/activity_main_start.xml" value="0.33" />
@@ -16,7 +20,7 @@
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/dynamic_testing.xml" value="0.2911500641299701" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/focus_border.xml" value="0.2911500641299701" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/popup_window.xml" value="0.33" />
-        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/popup_window_constraint.xml" value="0.67" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/popup_window_constraint.xml" value="0.264" />
       </map>
     </option>
   </component>

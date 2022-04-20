@@ -2,19 +2,24 @@
 
 4/19
 x add keypad blackout based on guesses
-- add UI elements to inform player of how to play, intuitively
-    - add background color to the numbers in the recorded attempts
+? add UI elements to inform player of how to play, intuitively
     x highlight current index item (use border box around element)
         - would be nice to add slight movement transition
 
-- end game stats
-    - attempts, graph
-- work on design / style
-    - add method to highlight currently focused entry (use currentIndex)
 
 
 4/20
-- code cleanup
+- end game stats
+    - attempts, graph
+
+- cleanup and style the app design / interface
+    - style recorded attempts / add background color to the numbers in the recorded attempts
+    - add animation to text windows?
+    - refactor views to be compatible with different android devices
+- code cleanup / make resources more modular.
+- resolve any bugs
+- look into how I could port or make testing the code as accessible as possible
+
 - work on readme
 - clean up
 
