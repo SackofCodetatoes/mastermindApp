@@ -4,7 +4,8 @@
 x add keypad blackout based on guesses
 - add UI elements to inform player of how to play, intuitively
     - add background color to the numbers in the recorded attempts
-    - highlight current index item (use border box around element)
+    x highlight current index item (use border box around element)
+        - would be nice to add slight movement transition
 
 - end game stats
     - attempts, graph

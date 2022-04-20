@@ -291,10 +291,20 @@ public class MainActivity extends AppCompatActivity {
                 if(currentIndex > 0){
                     currentIndex -= 1;
                 }
+                changeFocus(currentIndex+1, currentIndex);
             }
         });
     }
+    void changeFocus(int prev, int current){
 
+        numberPickers[prev].setBackgroundResource(0);
+        numberPickers[current].setBackgroundResource(R.drawable.focus_border);
+    }
+    void removeFocus(){
+        for(int i = 0; i < numberPickers.length; i++){
+            numberPickers[i].setBackgroundResource(0);
+        }
+    }
     //create keyboard function to apply to each keypad button
     void setKeypadFunction(Button setButton, int value){
         setButton.setOnClickListener(new View.OnClickListener(){
@@ -307,6 +317,7 @@ public class MainActivity extends AppCompatActivity {
                 if(currentIndex >= numOfNums){
                     currentIndex = numOfNums - 1;
                 }
+                changeFocus(currentIndex - 1, currentIndex);
             }
         });
     }
@@ -331,6 +342,8 @@ public class MainActivity extends AppCompatActivity {
                         if(currentIndex >= numberPickers.length){
                             currentIndex = numberPickers.length - 1;
                         }
+//                        changeFocus();
+                        removeFocus();
                     }
                 });
                 numberPickers[i].setOnTouchListener(new View.OnTouchListener() {
@@ -338,15 +351,11 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         numberPickers[setIndex].setBackgroundColor(Color.TRANSPARENT);
                         currentIndex = setIndex;
+//                        changeFocus();
+                        removeFocus();
                         return false;
                     }
                 });
-//                numberPickers[i].setOnClickListener(new View.OnClickListener(){
-//                    public void onClick(View v){
-//                        numberPickers[setIndex].setBackgroundColor(Color.TRANSPARENT);
-//                        currentIndex = setIndex;
-//                    }
-//                });
             }
         }
 
