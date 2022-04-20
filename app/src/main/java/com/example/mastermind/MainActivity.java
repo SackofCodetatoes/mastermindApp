@@ -5,8 +5,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Integer, String> checkedNums = new HashMap<Integer, String>();
     int selectedDifficulty, numOfNums = 4, currentIndex = 0;//refactor later
     MasterMind gameInstance;
+    View numberPickerBorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
         }
+        numberPickersGroup.setBackgroundResource(0);
 
         switch(selectedDifficulty){
             case 0:
@@ -170,22 +174,14 @@ public class MainActivity extends AppCompatActivity {
                 colorKeypad(gameInstance.guessResults(userInput));
                 break;
 
-//            case 1:
-            //draw box around all number pickers with a color indiciating result?
-//                //make a better ui to indicate difficult hints
-//                if(gameInstance.correctPositions > 0){
-//                    //color aqua
-//                    for(int i = 0; i < numberPickers.length; i++) {
-//                        numberPickers[i].setBackgroundColor(Color.rgb(45, 198, 207));
-//                    }
-//                }
-//                else if(gameInstance.correctDigits > 0){
-//                    //color whole wheel in orange209, 180, 48
-//                    for(int i = 0; i < numberPickers.length; i++) {
-//                        numberPickers[i].setBackgroundColor(Color.rgb(209, 180, 48));
-//                    }
-//                }
-//                break;
+            case 1:
+                if(gameInstance.correctPositions > 0){
+                    numberPickerBorder.setBackgroundResource(R.drawable.correct_position);
+                }
+                else if(gameInstance.correctDigits > 0){
+                    numberPickerBorder.setBackgroundResource(R.drawable.correct_digit);
+                }
+                break;
         }
     }
 
@@ -311,7 +307,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 if(currentIndex < numOfNums){
                     numberPickers[currentIndex].setValue(value);
-
                     currentIndex+=1;
                 }
                 if(currentIndex >= numOfNums){
@@ -365,5 +360,6 @@ public class MainActivity extends AppCompatActivity {
         textRecord = findViewById(R.id.text_main_record);
         attemptsDisplay = findViewById(R.id.text_main_attempts);
         attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
+        numberPickerBorder = findViewById(R.id.numberpicker_view_border);
     }
 }

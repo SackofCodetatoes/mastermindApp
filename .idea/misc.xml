@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/CodeStation7/AndroidStudioProjects/mastermind/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/correct_digits.xml" value="0.356" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/correct_position.xml" value="0.356" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/correct_positions.xml" value="0.356" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/focus_border.xml" value="0.356" />
+        <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/drawable/hard_guess_correct.xml" value="0.356" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/activity_gameover.xml" value="0.33" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/Jason/Desktop/androidapps/mastermindApp/app/src/main/res/layout/activity_main_start.xml" value="0.33" />

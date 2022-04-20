@@ -273,7 +273,17 @@
         app:layout_constraintStart_toEndOf="@+id/button_main_4"
         app:layout_constraintTop_toBottomOf="@+id/button_main_2" />
 
-    <view
+    <View
+        android:id="@+id/numberpicker_view_border"
+        android:layout_width="355dp"
+        android:layout_height="152dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scrollview_main_record" />
+
+    <View
         android:id="@+id/view"
         class="androidx.drawerlayout.widget.DrawerLayout"
         android:layout_width="409dp"
@@ -281,6 +291,6 @@
         android:layout_marginTop="30dp"
         android:background="#656B6E"
         app:layout_constraintTop_toTopOf="@+id/text_main_display"
-        tools:layout_editor_absoluteX="1dp"></view>
+        tools:layout_editor_absoluteX="1dp"></View>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
