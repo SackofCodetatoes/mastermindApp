@@ -23,18 +23,33 @@ public class MasterMind {
     HashMap<Integer, String> checkedNums;
 
 
+
+    /**
+     * Attempts to fetch a file a store in a local path.
+     *
+     * @param objKey the object unique key or path at origin.
+     * @param localDstPath final destination in the local machine.
+     * @return the file.
+     */
     public MasterMind(Context fromWhere, ServerCallback callOnSuccess){
         mainContext = fromWhere;
         signalOnResponse = callOnSuccess;
     }
-    void initialize(int numberOfDigits){
+
+    /**
+     *
+     * @param numberOfDigits
+     */
+    void initialize(int numberOfDigits, int floor, int ceiling){
         gameOver = false;
         attemptsRemaining = 10;
         Arrays.fill(secretNums, 0);
         previousGuesses= new StringBuilder(500);
-        generateSecretCode(numberOfDigits);
+        generateSecretCode(numberOfDigits, floor, ceiling);
         checkedNums = new HashMap<Integer, String>();
     }
+
+
     HashMap<Integer, String> guessResults(int[] userInput){
         for(int i = 0; i < userInput.length; i++){
             if(secretNums[userInput[i]] > 0 && !checkedNums.containsKey(userInput[i])) {
@@ -43,6 +58,7 @@ public class MasterMind {
             if(userInput[i] == secretCode[i]){
                 checkedNums.put(userInput[i], "correct");
             }
+
             if(secretNums[userInput[i]]==0){
                 checkedNums.put(userInput[i], "wrong");
             }
@@ -87,7 +103,7 @@ public class MasterMind {
         }
         //todo: simplify recorded guesses
         previousGuesses.append("" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
-
+//        Log.INFO();
         Log.d("secretNums is : ", Arrays.toString(secretNums));
         Log.d("secret code", "" + secretCode[0] + secretCode[1] + secretCode[2] + secretCode[3]);
         return inputResult;
@@ -95,24 +111,28 @@ public class MasterMind {
 
 
     String revealCode(){
-        int[] nopeCode = {0,0,0,0};
+        String cleanStringOfCode = "";
         if(gameOver){
-           return Arrays.toString(secretCode);
+            for(int i = 0; i < secretCode.length; i++){
+                cleanStringOfCode+= secretCode[i];
+                if(i < secretCode.length - 1){
+                    cleanStringOfCode+= ", ";
+                }
+            }
+           return cleanStringOfCode;
         }
-        return "You do not have the right";
+        return "Game is not over";
     }
 
 
-    private void generateSecretCode(int numberOfDigits){ //take out as own class
-        String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
+    private void generateSecretCode(int numberOfDigits, int floor, int ceiling){
+        String url = "https://www.random.org/integers/?num=" + numberOfDigits + "&min=" + floor + "&max=" + ceiling + "&col=1&base=10&format=plain&rnd=new";
         RequestQueue queue = Volley.newRequestQueue(mainContext);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        int[] secretCodeResponse = response.split("\n"); //implment this / clean up response parsing
-//                        responseString = response.substring(0, 8);
-                        responseString = response.replaceAll("[^0-7]", "");//redundant, put
+                        responseString = response.replaceAll("[^0-7]", "");//clean up parsing method
                         for (int i = 0; i < responseString.length(); i++) {
                             secretCode[i] = Character.getNumericValue((responseString.charAt(i)));
                             secretNums[secretCode[i]] += 1;

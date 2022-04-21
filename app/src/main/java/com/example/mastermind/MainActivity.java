@@ -32,12 +32,15 @@ public class MainActivity extends AppCompatActivity {
     NumberPicker[] numberPickers = new NumberPicker[4];
     private Group difficultyButtonsGroup, numberPickersGroup;
     int[] userInput, inputResult;
-    int selectedDifficulty, numOfNums = 4, currentIndex = 0, totalPlays = 0, wins = 0;
+    int selectedDifficulty, numOfNums = 4, floor = 0, ceiling = 7, currentIndex = 0, totalPlays = 0, wins = 0;
     MasterMind gameInstance;
     View numberPickerBorder;
-    SharedPreferences numGamesPlayed, numGamesWon;
+    SharedPreferences totalGamesPlayed, totalGamesWon;
 
-
+    /**
+     * on create method for main activity. clears starting action bar, disables keyboard input, and initializes game elements
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +49,20 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-        contentViewSwitcher(0);
-        numGamesPlayed = getSharedPreferences("completedGames", Context.MODE_PRIVATE);
-        numGamesWon = getSharedPreferences("wins", Context.MODE_PRIVATE);
-        totalPlays = numGamesPlayed.getInt("completedGames", 0);
-        wins = numGamesWon.getInt("wins", 0);
+        loadStats();
+        gameInstance = new MasterMind(this, createCallbackMethods());
+        changeContentView(0);
+    }
 
-        ServerCallback enableButtonOnSuccess = new ServerCallback() {
+
+    /**
+     * Declares callback methods for Mastermind's http request result.
+     * onSuccess: enables tryButton
+     * onFailure: planned feature to enable a retry button to retry the http request
+     * @return gameReadyCallback callback methods to be sent to Mastermind on instance declaration
+     */
+    ServerCallback createCallbackMethods(){
+        ServerCallback gameReadyCallback = new ServerCallback() {
             @Override
             public void onSuccess(String response) {
                 textDisplay.setText("Game is Ready!");
@@ -64,11 +74,15 @@ public class MainActivity extends AppCompatActivity {
                 textDisplay.setText("Code could not be generated");
             }
         };
-        gameInstance = new MasterMind(this, enableButtonOnSuccess);
+        return gameReadyCallback;
     }
 
-
-    void contentViewSwitcher(int viewTarget){
+    /**
+     * Changes current screen content between starting menu and game activity
+     * @param viewTarget integer indicating which view to change to.
+     *                   0 = Starting Menu, 1 = Game activity
+     */
+    void changeContentView(int viewTarget){
         switch(viewTarget){
             case 0:
                 setContentView(R.layout.activity_menu);
@@ -80,37 +94,51 @@ public class MainActivity extends AppCompatActivity {
                 initGameLayoutButtons();
 //                toggleButtons(0);
                 tryButton.setVisibility(View.VISIBLE);
-                gameInstance.initialize(numOfNums);
+                gameInstance.initialize(numOfNums, floor, ceiling);
                 currentIndex = 0;
                 break;
         }
     }
 
+    /**
+     * loadStats and saveStats called to load saved game values from sharedPreferences.
+     * Currently records number of completed games and wins
+     */
+    void loadStats(){
+        totalGamesPlayed = getSharedPreferences("completedGames", Context.MODE_PRIVATE);
+        totalGamesWon = getSharedPreferences("wins", Context.MODE_PRIVATE);
+        totalPlays = totalGamesPlayed.getInt("completedGames", 0);
+        wins = totalGamesWon.getInt("wins", 0);
+    }
     void saveStats(){
-        SharedPreferences.Editor editor = numGamesPlayed.edit();
+        SharedPreferences.Editor editor = totalGamesPlayed.edit();
         editor.putInt("completedGames", totalPlays);
-        editor.putInt("wins", wins + 1);
+        editor.putInt("wins", wins);
         editor.apply();
     }
 
+    /**
+     * Step function triggered by tryButton. Checks gameInstance state updates view elements accordingly.
+     * Colors UI, checks if game is over, or tells player the result of their guess and updates UI elements
+     */
     void updateView(){
         colorUI(inputResult);
-
         if(gameInstance.gameOver){
             totalPlays += 1;
-            if(gameInstance.correctPositions == 4){
+            if(gameInstance.correctPositions == numOfNums){
                 textDisplay.setText("You won! Play again?");
                 wins+=1;
                 Log.d("wins / winrate", " "+ wins + " / " + ((float)wins/(float)totalPlays) * 100);
             }
             else {
-                textDisplay.setText("Gameover. Secret code was " + gameInstance.revealCode());
+                textDisplay.setText("Secret code was " + gameInstance.revealCode());
             }
             tryButton.setVisibility(View.INVISIBLE);
             restartButton.setVisibility(View.VISIBLE);
             saveStats();
-            gameoverPopup(findViewById(R.id.text_main_attempts));
+            gameOverPopup(findViewById(R.id.text_main_attempts));
         }
+
         else{
             if(gameInstance.correctPositions > 0){
                 textDisplay.setText("Player guessed a correct number and position. Try again");
@@ -125,7 +153,10 @@ public class MainActivity extends AppCompatActivity {
         attemptsRecord.fullScroll(View.FOCUS_DOWN);
     }
 
-
+    /**
+     * colorKeypad takes in results and colors the keypad depending on the outcome. Called from colorUI
+     * @param results HashMap object containing Integer key and string value detailing the guess result
+     */
     void colorKeypad(HashMap<Integer, String> results){
         Integer keyNum;
         for(Map.Entry m : results.entrySet()){
@@ -141,6 +172,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * clears the UI of previous indicators and updates the response hints according set difficulty
+     * selected difficulty 0: normal and 1: hard. Normal highlights correct numbers and numbers in the code, hard reveals less hint info
+     * @param inputResult integer array with values between 0 - 2 indicating the how the numberpickers should be colored based off user guess and correct code
+     *                    0: do nothing, 1: found, but incorrect position, 2: correct guess and position
+     */
     void colorUI(int[] inputResult){
         for(int i = 0; i < numberPickers.length; i++) {
             numberPickers[i].setBackgroundColor(Color.TRANSPARENT);
@@ -178,7 +215,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void gameoverPopup(View view){
+    /**
+     * creates popup window using popupwindow constraints layout showing overall results and end game result
+     * @param view  reference point on where the show the popup. since popup is centered on screen, view just needs to be an element from the starting activity
+     */
+    void gameOverPopup(View view){
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_window_constraint, null);
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -186,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
         boolean focusable = true; //dismiss popup on clicking outside according to notes
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
         TextView textEndResult = (TextView) popupWindow.getContentView().findViewById(R.id.text_popup_result);
         TextView textStats = (TextView) popupWindow.getContentView().findViewById(R.id.text_popup_stats);
         if(gameInstance.correctPositions == 4){
@@ -198,6 +240,9 @@ public class MainActivity extends AppCompatActivity {
         textStats.setText("Games Played: " + totalPlays + " | Win Rate: " + winRate + "%");
     }
 
+    /**
+     * initialize declared buttons from the menu layout and sets click functionality
+     */
     void initMenuLayoutButtons(){
         menuStartButton = findViewById(R.id.button_menu_start);
         menuNormalButton = findViewById(R.id.button_menu_normal);
@@ -222,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
         });
         menuStartButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                contentViewSwitcher(1);
+                changeContentView(1);
             }
         });
         menuResetStats.setOnClickListener(new View.OnClickListener(){
@@ -233,6 +278,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * initialize game layout buttons and sets click functionality
+     * tryButton: sets userInput attribute based off values on numberpickers, checks with gameInstance's for feedback, and updatesView
+     * restartButton: changes view to Start Menu
+     * keyPadButtons: goes through keypadButtons Array, initializes each button and sets the function using setKeypad Method
+     * keyBackButton: sets the backspace button functionality by changing currentIndex and changing the focus window
+     */
     void initGameLayoutButtons(){
         int[] keypadIDS = {R.id.button_main_0, R.id.button_main_1, R.id.button_main_2,R.id.button_main_3, R.id.button_main_4, R.id.button_main_5,
                 R.id.button_main_6, R.id.button_main_7};
@@ -243,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
 
         tryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                userInput = new int[numOfNums];
+                userInput = new int[numberPickers.length];
                 for(int i = 0; i < userInput.length; i++){
                     userInput[i] = numberPickers[i].getValue();
                 }
@@ -254,8 +306,7 @@ public class MainActivity extends AppCompatActivity {
         });
         restartButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-
-                contentViewSwitcher(0);
+                changeContentView(0);
             }
         });
 
@@ -276,32 +327,52 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * updates current focused numberpicker by removing the highlight from previous and highlights the current
+     * @param prev index indicating previously highlighted item
+     * @param current index of what to highlight
+     */
     void changeFocus(int prev, int current){
         numberPickers[prev].setBackgroundResource(0);
         numberPickers[current].setBackgroundResource(R.drawable.focus_border);
     }
 
+
+    /**
+     * clear all focused numberpickers to simulate change of user input
+     */
     void clearFocus(){
         for(int i = 0; i < numberPickers.length; i++){
             numberPickers[i].setBackgroundResource(0);
         }
     }
 
+    /**
+     * called to set a keypad button functionality. onclick, button should set the current focused item to the button's value and move current focused item to the right
+     * @param setButton button to set
+     * @param value value to assign
+     */
     void setKeypadFunction(Button setButton, int value){
         setButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if(currentIndex < numOfNums){
+                if(currentIndex < numberPickers.length){
                     numberPickers[currentIndex].setValue(value);
                     currentIndex+=1;
                 }
-                if(currentIndex >= numOfNums){
-                    currentIndex = numOfNums - 1;
+                if(currentIndex >= numberPickers.length){
+                    currentIndex = numberPickers.length - 1;
                 }
                 changeFocus(currentIndex - 1, currentIndex);
             }
         });
     }
 
+    /**
+     * initialize game layout elements, textView elements and numberpickers
+     * pickerIds preset to indicate available pickers. (future feature is to dynamically add more for custom code length)
+     * numberPickers[i].setOnValueChangeListener: on value change, change current index to next numberpicker for keypad press
+     * numberPicker[i].setOnTouchListener: on touch, change current index to touched element to allow selective keypad edits
+     */
     void initGameLayoutInterface(){
         String[] pickerVals = {"0", "1", "2", "3", "4", "5", "6", "7"};
         int[] pickerIDs = {R.id.numberpicker_main_picker0, R.id.numberpicker_main_picker1, R.id.numberpicker_main_picker2, R.id.numberpicker_main_picker3};
@@ -309,9 +380,10 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < pickerIDs.length; i++){
             numberPickers[i] = findViewById(pickerIDs[i]);
-            numberPickers[i].setMaxValue(7);
-            numberPickers[i].setMinValue(0);
+            numberPickers[i].setMaxValue(ceiling);
+            numberPickers[i].setMinValue(floor);
             numberPickers[i].setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
             final int setIndex = i;
             if(i < pickerIDs.length){
                 numberPickers[i].setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
@@ -338,7 +410,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }
-
         attemptsRecord = findViewById(R.id.scrollview_main_record);
         textDisplay = findViewById(R.id.text_main_display);
         textDisplay.setText(("Guess a 4 digit combination"));
