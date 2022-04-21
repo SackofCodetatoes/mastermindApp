@@ -4,9 +4,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,43 +34,43 @@ public class MainActivity extends AppCompatActivity {
     HorizontalScrollView scrollField;
     ScrollView attemptsRecord;
     private Button menuNormalButton, menuHardButton, menuStartButton;
-    private TextView textDisplay, attemptsDisplay, textRecord;
+    private TextView textDisplay, attemptsDisplay, textRecord, menuText;
     NumberPicker[] numberPickers = new NumberPicker[4];
     private Group difficultyButtonsGroup, numberPickersGroup;
     int[] userInput, inputResult;
-    HashMap<Integer, String> results = new HashMap<Integer, String>();
-    HashMap<Integer, String> checkedNums = new HashMap<Integer, String>();
-    int selectedDifficulty, numOfNums = 4, currentIndex = 0;//refactor later
+    int selectedDifficulty, numOfNums = 4, currentIndex = 0, totalPlays = 0;
     MasterMind gameInstance;
     View numberPickerBorder;
+    SharedPreferences saveData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-
         contentViewSwitcher(0);
+        saveData = getSharedPreferences("completedGames", Context.MODE_PRIVATE);
+        totalPlays = saveData.getInt("completedGames", 0);
+
         ServerCallback enableButtonOnSuccess = new ServerCallback() {
             @Override
             public void onSuccess(String response) {
                 textDisplay.setText("Game is Ready!");
                 tryButton.setEnabled(true);
             }
-
             @Override
             public void onFailure(String response) {
                 //todo: implement method to enable a retry init button
                 textDisplay.setText("Code could not be generated");
             }
         };
-
         gameInstance = new MasterMind(this, enableButtonOnSuccess);
     }
+
 
     void contentViewSwitcher(int viewTarget){
         switch(viewTarget){
@@ -94,7 +98,12 @@ public class MainActivity extends AppCompatActivity {
         colorUI(inputResult);
 
         if(gameInstance.gameOver){
-            //todo: change end screen to pop up modal with semi transparent white background with game state, stats, and option buttons
+            totalPlays+=1;
+            Log.d("total plays: ", String.valueOf(totalPlays));;
+            SharedPreferences.Editor editor = saveData.edit();
+            editor.putInt("completedGames", totalPlays);
+            editor.apply();
+
             gameoverPopup(findViewById(R.id.text_main_attempts));
             if(gameInstance.correctPositions == 4){
                 textDisplay.setText("You won! Play again?");
@@ -193,12 +202,14 @@ public class MainActivity extends AppCompatActivity {
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         TextView textEndResult = (TextView) popupWindow.getContentView().findViewById(R.id.text_popup_result);
+        TextView textStats = (TextView) popupWindow.getContentView().findViewById(R.id.text_popup_stats);
         if(gameInstance.correctPositions == 4){
             textEndResult.setText("Good Job!");
         }
         else {
             textEndResult.setText("Better Luck Next Time");
         }
+        textStats.setText(String.valueOf(totalPlays));
     }
 
     void initMenuLayoutButtons(){
