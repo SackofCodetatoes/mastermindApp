@@ -1,6 +1,5 @@
 package com.example.mastermind;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
@@ -8,7 +7,6 @@ import androidx.constraintlayout.widget.Group;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
@@ -28,20 +25,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private Button tryButton, normalButton, hardButton, restartButton, keyBackButton;
     private Button[] keypadButtons = new Button[8];
-
-    HorizontalScrollView scrollField;
+    private Button menuNormalButton, menuHardButton, menuStartButton, tryButton, restartButton, keyBackButton, menuResetStats;
     ScrollView attemptsRecord;
-    private Button menuNormalButton, menuHardButton, menuStartButton;
     private TextView textDisplay, attemptsDisplay, textRecord, menuText;
     NumberPicker[] numberPickers = new NumberPicker[4];
     private Group difficultyButtonsGroup, numberPickersGroup;
     int[] userInput, inputResult;
-    int selectedDifficulty, numOfNums = 4, currentIndex = 0, totalPlays = 0;
+    int selectedDifficulty, numOfNums = 4, currentIndex = 0, totalPlays = 0, wins = 0;
     MasterMind gameInstance;
     View numberPickerBorder;
-    SharedPreferences saveData;
+    SharedPreferences numGamesPlayed, numGamesWon;
 
 
     @Override
@@ -53,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
         contentViewSwitcher(0);
-        saveData = getSharedPreferences("completedGames", Context.MODE_PRIVATE);
-        totalPlays = saveData.getInt("completedGames", 0);
+        numGamesPlayed = getSharedPreferences("completedGames", Context.MODE_PRIVATE);
+        numGamesWon = getSharedPreferences("wins", Context.MODE_PRIVATE);
+        totalPlays = numGamesPlayed.getInt("completedGames", 0);
+        wins = numGamesWon.getInt("wins", 0);
 
         ServerCallback enableButtonOnSuccess = new ServerCallback() {
             @Override
@@ -82,38 +78,38 @@ public class MainActivity extends AppCompatActivity {
                 setContentView(R.layout.activity_main);
                 initGameLayoutInterface();
                 initGameLayoutButtons();
-                toggleButtons(0);
+//                toggleButtons(0);
                 tryButton.setVisibility(View.VISIBLE);
                 gameInstance.initialize(numOfNums);
                 currentIndex = 0;
-
-                break;
-            case 2:
-                setContentView(R.layout.dynamic_testing);
-                //init text and buttons
                 break;
         }
     }
+
+    void saveStats(){
+        SharedPreferences.Editor editor = numGamesPlayed.edit();
+        editor.putInt("completedGames", totalPlays);
+        editor.putInt("wins", wins + 1);
+        editor.apply();
+    }
+
     void updateView(){
         colorUI(inputResult);
 
         if(gameInstance.gameOver){
-            totalPlays+=1;
-            Log.d("total plays: ", String.valueOf(totalPlays));;
-            SharedPreferences.Editor editor = saveData.edit();
-            editor.putInt("completedGames", totalPlays);
-            editor.apply();
-
-            gameoverPopup(findViewById(R.id.text_main_attempts));
+            totalPlays += 1;
             if(gameInstance.correctPositions == 4){
                 textDisplay.setText("You won! Play again?");
+                wins+=1;
+                Log.d("wins / winrate", " "+ wins + " / " + ((float)wins/(float)totalPlays) * 100);
             }
             else {
                 textDisplay.setText("Gameover. Secret code was " + gameInstance.revealCode());
             }
             tryButton.setVisibility(View.INVISIBLE);
             restartButton.setVisibility(View.VISIBLE);
-            //toggleButtons(1); should be handled on main activity
+            saveStats();
+            gameoverPopup(findViewById(R.id.text_main_attempts));
         }
         else{
             if(gameInstance.correctPositions > 0){
@@ -125,24 +121,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
-
         textRecord.setText((gameInstance.previousGuesses));
         attemptsRecord.fullScroll(View.FOCUS_DOWN);
     }
 
-    void toggleButtons(int onOff){
-        //used in old implementation to show buttons clicker view, not currently used
-        if(onOff == 0){
-            difficultyButtonsGroup.setVisibility(View.INVISIBLE);
-            difficultyButtonsGroup.setEnabled(false);
-            tryButton.setVisibility(View.VISIBLE);
-        }
-        else if(onOff == 1){
-            difficultyButtonsGroup.setVisibility(View.VISIBLE);
-            difficultyButtonsGroup.setEnabled(true);
-            tryButton.setVisibility(View.INVISIBLE);
-        }
-    }
 
     void colorKeypad(HashMap<Integer, String> results){
         Integer keyNum;
@@ -195,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
     void gameoverPopup(View view){
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_window_constraint, null);
-        String manualResultCheck = "Game Over";
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; //dismiss popup on clicking outside according to notes
@@ -209,13 +190,15 @@ public class MainActivity extends AppCompatActivity {
         else {
             textEndResult.setText("Better Luck Next Time");
         }
-        textStats.setText(String.valueOf(totalPlays));
+        int winRate = (int)(((float)wins / (float)totalPlays) * 100);
+        textStats.setText("Games Played: " + totalPlays + " | Win Rate: " + winRate + "%");
     }
 
     void initMenuLayoutButtons(){
         menuStartButton = findViewById(R.id.button_menu_start);
         menuNormalButton = findViewById(R.id.button_menu_normal);
         menuHardButton = findViewById(R.id.button_menu_hard);
+        menuResetStats = findViewById(R.id.button_menu_reset);
 
         menuNormalButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -235,9 +218,13 @@ public class MainActivity extends AppCompatActivity {
         });
         menuStartButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //disable main group and enable the start screen with difficulty
-                Group menuGroup = findViewById(R.id.group_menu_screen);
                 contentViewSwitcher(1);
+            }
+        });
+        menuResetStats.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                wins = 0;
+                totalPlays = 0;
             }
         });
     }
@@ -247,13 +234,10 @@ public class MainActivity extends AppCompatActivity {
                 R.id.button_main_6, R.id.button_main_7};
         tryButton = findViewById(R.id.button_main_clicker);
         restartButton = findViewById(R.id.button_main_restart);
-        normalButton = findViewById(R.id.button_main_easy);
-        hardButton = findViewById(R.id.button_main_hard);
 
         difficultyButtonsGroup = findViewById(R.id.difficulty_main_group);
 
         tryButton.setOnClickListener(new View.OnClickListener(){
-            @RequiresApi(api = Build.VERSION_CODES.N)
             public void onClick(View v){
                 userInput = new int[numOfNums];
                 for(int i = 0; i < userInput.length; i++){
@@ -266,28 +250,16 @@ public class MainActivity extends AppCompatActivity {
         });
         restartButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+
                 contentViewSwitcher(0);
             }
         });
-        normalButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                selectedDifficulty = 0;
-                toggleButtons(0);
-                gameInstance.initialize(numOfNums);
 
-            }
-        });
-        hardButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                selectedDifficulty = 1;
-                toggleButtons(0);
-                gameInstance.initialize(numOfNums);
-            }
-        });
         for(int i = 0; i < keypadIDS.length; i++){
             keypadButtons[i] = findViewById(keypadIDS[i]);
             setKeypadFunction(keypadButtons[i], i);
         }
+
         keyBackButton = findViewById(R.id.button_main_backspace);
         keyBackButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -299,17 +271,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    void changeFocus(int prev, int current){
 
+    void changeFocus(int prev, int current){
         numberPickers[prev].setBackgroundResource(0);
         numberPickers[current].setBackgroundResource(R.drawable.focus_border);
     }
-    void removeFocus(){
+
+    void clearFocus(){
         for(int i = 0; i < numberPickers.length; i++){
             numberPickers[i].setBackgroundResource(0);
         }
     }
-    //create keyboard function to apply to each keypad button
+
     void setKeypadFunction(Button setButton, int value){
         setButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -346,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                             currentIndex = numberPickers.length - 1;
                         }
 //                        changeFocus();
-                        removeFocus();
+                        clearFocus();
                     }
                 });
                 numberPickers[i].setOnTouchListener(new View.OnTouchListener() {
@@ -355,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
                         numberPickers[setIndex].setBackgroundColor(Color.TRANSPARENT);
                         currentIndex = setIndex;
 //                        changeFocus();
-                        removeFocus();
+                        clearFocus();
                         return false;
                     }
                 });

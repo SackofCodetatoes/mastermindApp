@@ -110,11 +110,9 @@ public class MasterMind {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        Log.d("Response", "" + Arrays.toString(response.split("\n")));
 //                        int[] secretCodeResponse = response.split("\n"); //implment this / clean up response parsing
-                        responseString = response.substring(0, 8);
-                        responseString = responseString.replaceAll("[^0-7]", "");//redundant, put
+//                        responseString = response.substring(0, 8);
+                        responseString = response.replaceAll("[^0-7]", "");//redundant, put
                         for (int i = 0; i < responseString.length(); i++) {
                             secretCode[i] = Character.getNumericValue((responseString.charAt(i)));
                             secretNums[secretCode[i]] += 1;

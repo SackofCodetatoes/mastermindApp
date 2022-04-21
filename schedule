@@ -10,7 +10,7 @@ x add keypad blackout based on guesses
 
 4/20
 - end game stats
-    - attempts, graph
+    - attempts, win%
 
 - cleanup and style the app design / interface
     - style recorded attempts / add background color to the numbers in the recorded attempts

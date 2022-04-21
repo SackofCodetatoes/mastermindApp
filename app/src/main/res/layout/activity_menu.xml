@@ -83,5 +83,15 @@
         app:layout_constraintStart_toEndOf="@+id/button_menu_normal"
         app:layout_constraintTop_toBottomOf="@+id/text_menu_title" />
 
+    <Button
+        android:id="@+id/button_menu_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="151dp"
+        android:layout_marginTop="8dp"
+        android:text="Reset Stats"
+        app:layout_constraintStart_toStartOf="@+id/text_menu_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
