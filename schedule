@@ -9,9 +9,12 @@ x add keypad blackout based on guesses
 
 
 4/20
-- end game stats
-    - attempts, win%
+? end game stats
+    x attempts, win%
 
+
+
+4/21 (DUE DATE)
 - cleanup and style the app design / interface
     - style recorded attempts / add background color to the numbers in the recorded attempts
     - add animation to text windows?
@@ -22,6 +25,3 @@ x add keypad blackout based on guesses
 
 - work on readme
 - clean up
-
-
-4/21 (DUE DATE)

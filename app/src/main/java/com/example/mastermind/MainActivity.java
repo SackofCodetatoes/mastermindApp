@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         Integer keyNum;
         for(Map.Entry m : results.entrySet()){
             keyNum = (int) m.getKey();
+            keypadButtons[keyNum].setTextColor(Color.WHITE);
             if (m.getValue() == "wrong") {
                 keypadButtons[keyNum].setBackgroundColor(Color.rgb(23, 23, 23));
             } else if(m.getValue() == "found"){
@@ -170,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
                 else if(gameInstance.correctDigits > 0){
                     numberPickerBorder.setBackgroundResource(R.drawable.correct_digit);
                 }
+                else{
+                    numberPickerBorder.setBackgroundResource(0);
+                }
                 break;
         }
     }
@@ -203,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         menuNormalButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 selectedDifficulty = 0;
-                menuNormalButton.setBackgroundColor(Color.BLUE);
+                menuNormalButton.setBackgroundColor(Color.parseColor("#47c984"));
                 menuHardButton.setBackgroundColor(Color.GRAY);
                 menuStartButton.setEnabled(true);
             }
@@ -211,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         menuHardButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 selectedDifficulty = 1;
-                menuHardButton.setBackgroundColor(Color.BLUE);
+                menuHardButton.setBackgroundColor(Color.parseColor("#EA5E45"));
                 menuNormalButton.setBackgroundColor(Color.GRAY);
                 menuStartButton.setEnabled(true);
             }

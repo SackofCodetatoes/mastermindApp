@@ -96,12 +96,15 @@
 
     <ScrollView
         android:id="@+id/scrollview_main_record"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="72dp"
-        android:layout_marginStart="36dp"
         android:layout_marginTop="16dp"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/text_main_attempts"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <LinearLayout
             android:id="@+id/layout_main_record"
@@ -112,20 +115,20 @@
                 android:id="@+id/text_main_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
                 android:text="Your guesses Here" />
-
         </LinearLayout>
     </ScrollView>
 
     <TextView
         android:id="@+id/text_main_display"
-        android:layout_width="300dp"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="blank"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numberpicker_main_picker3" />
 
@@ -133,11 +136,12 @@
         android:id="@+id/text_main_attempts"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="35dp"
         android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.026"
+        android:text="guesses"
+        app:layout_constraintEnd_toStartOf="@+id/scrollview_main_record"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -198,7 +202,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="80dp"
-        android:text="R"
+        android:drawableTop="@drawable/icon_backspace_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button_main_0"
@@ -287,7 +291,8 @@
         android:layout_width="409dp"
         android:layout_height="160dp"
         android:layout_marginTop="32dp"
-        android:background="#656B6E"
+        android:background="#8B8E8F"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="@+id/text_main_display"
         tools:layout_editor_absoluteX="2dp"></View>
 

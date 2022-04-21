@@ -36,6 +36,7 @@
         android:layout_marginTop="12dp"
         android:text="Normal"
         app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#47c984"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menu_text" />
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
         android:text="Hard"
+        android:backgroundTint="#EA5E45"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,11 +87,11 @@
 
     <Button
         android:id="@+id/button_menu_reset"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="151dp"
-        android:layout_marginTop="8dp"
-        android:text="Reset Stats"
+        android:layout_marginStart="196dp"
+        android:layout_marginTop="16dp"
+        android:text="?"
         app:layout_constraintStart_toStartOf="@+id/text_menu_title"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -4,11 +4,13 @@
         name="KeypadButton">
         <item
             name="android:backgroundTint"
-            >#B1BCBC</item>
+            >#d3d6da</item>
         <item name="android:layout_width"
             >50dp</item>
         <item name="android:layout_height"
             >45dp</item>
+        <item name="android:textColor"
+            >#090909</item>
     </style>
 
     <style name="GameoverText" parent="android:Widget.TextView">
