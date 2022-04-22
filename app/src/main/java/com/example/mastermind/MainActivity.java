@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     NumberPicker[] numberPickers = new NumberPicker[4];
     private Group difficultyButtonsGroup, numberPickersGroup;
     int[] userInput, inputResult;
-    int selectedDifficulty, numOfNums = 4, floor = 0, ceiling = 7, attemptsGoal = 10, currentIndex = 0, totalPlays = 0, wins = 0;
+    int selectedDifficulty, numOfNums = 4, floor = 0, ceiling = 7, attemptsGoal = 10, currentIndex = 0, totalPlays = 0, wins = 0, titleClickCounter = 0;
     MasterMind gameInstance;
     View numberPickerBorder;
     SharedPreferences totalGamesPlayed, totalGamesWon;
@@ -276,6 +276,22 @@ public class MainActivity extends AppCompatActivity {
                 totalPlays = 0;
             }
         });
+        menuText = findViewById(R.id.text_menu_title);
+        menuText.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                if(titleClickCounter == 8){
+                    Log.d("Reset Stats", String.valueOf(titleClickCounter));
+                    totalPlays = 0;
+                    wins = 0;
+                    saveStats();
+                    titleClickCounter = 0;
+                    //pop a toast to tell the player
+                }
+                else {
+                    titleClickCounter+=1;
+                }
+            }
+        });
     }
 
     /**
@@ -417,5 +433,6 @@ public class MainActivity extends AppCompatActivity {
         attemptsDisplay = findViewById(R.id.text_main_attempts);
         attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
         numberPickerBorder = findViewById(R.id.numberpicker_view_border);
+
     }
 }
