@@ -16,7 +16,7 @@ public class MasterMind {
     private int[] secretCode, secretNums = {0, 0, 0, 0, 0, 0, 0, 0};
     private String responseString;
     StringBuilder previousGuesses;
-    int attemptsRemaining, correctDigits = 0, correctPositions = 0;
+    int attemptsRemaining, correctDigits = 0, correctPositions = 0, gameDifficulty;
     boolean gameOver = false;
     Context mainContext;
     ServerCallback signalOnResponse;
@@ -37,10 +37,11 @@ public class MasterMind {
      * @param ceiling largest number for number generator
      * @param attemptsGoal how many attempts player has to complete the game
      */
-    void initialize(int numOfDigits, int floor, int ceiling, int attemptsGoal){
+    void initialize(int numOfDigits, int floor, int ceiling, int attemptsGoal, int difficulty){
         gameOver = false;
         secretCode = new int[numOfDigits];
         attemptsRemaining = attemptsGoal;
+        gameDifficulty = difficulty;
         Arrays.fill(secretNums, 0);
         previousGuesses= new StringBuilder(500);
         generateSecretCode(numOfDigits, floor, ceiling);
@@ -69,6 +70,27 @@ public class MasterMind {
         return checkedNums;
     }
 
+
+    String emojiCode(int[] inputResult){
+        int orangeDiamondUni = 0x1F536, blackSquareUni = 0x25FC, greenCheckUni = 0x2B1C;
+        String emojiResult = "";
+        for(int i = 0; i < inputResult.length; i++){
+            switch (inputResult[i]){
+                case 0:
+                    emojiResult+= new String(Character.toChars(blackSquareUni));
+                    break;
+                case 1:
+                    emojiResult += new String(Character.toChars(orangeDiamondUni));
+                    break;
+                case 2:
+                    emojiResult += new String(Character.toChars(greenCheckUni));
+                    break;
+            }
+        }
+//        new String(Character.toChars(unicode))
+        return emojiResult;
+    }
+
     /**
      * compares provided userInput with secretcode, sets attribute data accordingly, and returns int[] on how it should be colored for hints
      * first forloop checks and sets inputResults for correct positions and subtracts from total number quantity to address multiples of a digit in code
@@ -81,17 +103,17 @@ public class MasterMind {
     int[] checkCode(int[] userInput){
         int[] inputResult = new int[userInput.length];
         int[] numQuantities = secretNums.clone();
-        String result = " no correct #(s)";
+        String result = " has no correct #(s)";
         correctPositions = 0;
         correctDigits = 0;
-
         for(int i = 0; i < userInput.length; i++){
             if(userInput[i] == secretCode[i]) {
                 inputResult[i] = 2;
                 correctPositions += 1;
                 numQuantities[userInput[i]] -= 1;
-                if(result == " no correct #(s)"){
-                    result = " correct #(s) & position";
+                if(result == " has no correct #(s)"){
+//                    result = " correct #(s) & position";
+                    result = " has correct position(s)";
                 }
             }
         }
@@ -100,8 +122,8 @@ public class MasterMind {
                 inputResult[i] = 1;
                 correctDigits += 1;
                 numQuantities[userInput[i]] -= 1;
-                if(result == " no correct #(s)"){
-                    result = " correct #(s)";
+                if(result == " has no correct #(s)"){
+                    result = " has correct #(s)";
                 }
             }
         }
@@ -114,7 +136,12 @@ public class MasterMind {
             gameOver = true;
         }
         //todo: simplify recorded guesses
-        previousGuesses.append("" + userInput[0] + userInput[1] + userInput[2] + userInput[3] + " "+ result +"\n");
+        if(gameDifficulty == 0){
+            previousGuesses.append("" + userInput[0] + ", " + userInput[1] + ", " + userInput[2] + ", " + userInput[3] + " = " + emojiCode(inputResult) +"\n");
+        }
+        else{
+            previousGuesses.append("" + userInput[0] + ", " + userInput[1] + ", " + userInput[2] + ", " + userInput[3] + " "+ result +"\n");
+        }
 //        Log.INFO();
         Log.d("secretNums is : ", Arrays.toString(secretNums));
         Log.d("secret code", "" + secretCode[0] + secretCode[1] + secretCode[2] + secretCode[3]);
@@ -134,7 +161,7 @@ public class MasterMind {
                     cleanStringOfCode+= ", ";
                 }
             }
-           return cleanStringOfCode;
+            return cleanStringOfCode;
         }
         return "Game is not over";
     }

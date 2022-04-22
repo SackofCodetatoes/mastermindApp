@@ -69,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
         ServerCallback gameReadyCallback = new ServerCallback() {
             @Override
             public void onSuccess(String response) {
-                textDisplay.setText("Game is Ready!");
+                textDisplay.setText("Game is Ready! Guess a 4 digit combination");
                 tryButton.setEnabled(true);
             }
             @Override
             public void onFailure(String response) {
                 //todo: implement method to enable a retry init button
-                textDisplay.setText("Code could not be generated");
+                textDisplay.setText("Code could not be generated.");
             }
         };
         return gameReadyCallback;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 initGameLayoutButtons();
 //                toggleButtons(0);
                 tryButton.setVisibility(View.VISIBLE);
-                gameInstance.initialize(numOfNums, floor, ceiling, attemptsGoal);
+                gameInstance.initialize(numOfNums, floor, ceiling, attemptsGoal, selectedDifficulty);
                 currentIndex = 0;
                 break;
         }
@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         textRecord.setText((gameInstance.previousGuesses));
         attemptsRecord.fullScroll(View.FOCUS_DOWN);
     }
+
 
     /**
      * colorKeypad takes in results and colors the keypad depending on the outcome. Called from colorUI
@@ -283,7 +284,6 @@ public class MainActivity extends AppCompatActivity {
         menuText = findViewById(R.id.text_menu_title);
         menuText.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-
                 if(titleClickCounter == 25){
                     Log.d("Reset Stats", String.valueOf(titleClickCounter));
                     totalPlays = 0;
@@ -393,6 +393,8 @@ public class MainActivity extends AppCompatActivity {
                     currentIndex = numberPickers.length - 1;
                 }
                 changeFocus(currentIndex - 1, currentIndex);
+                numberPickerBorder.setBackgroundResource(0);
+
             }
         });
     }
@@ -426,6 +428,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 //                        changeFocus();
                         clearFocus();
+                        numberPickerBorder.setBackgroundResource(0);
+
                     }
                 });
                 numberPickers[i].setOnTouchListener(new View.OnTouchListener() {
@@ -435,6 +439,8 @@ public class MainActivity extends AppCompatActivity {
                         currentIndex = setIndex;
 //                        changeFocus();
                         clearFocus();
+                        numberPickerBorder.setBackgroundResource(0);
+
                         return false;
                     }
                 });
@@ -442,7 +448,7 @@ public class MainActivity extends AppCompatActivity {
         }
         attemptsRecord = findViewById(R.id.scrollview_main_record);
         textDisplay = findViewById(R.id.text_main_display);
-        textDisplay.setText(("Guess a 4 digit combination"));
+        textDisplay.setText(("Code is generating..."));
         textRecord = findViewById(R.id.text_main_record);
         attemptsDisplay = findViewById(R.id.text_main_attempts);
         attemptsDisplay.setText("Attempts Remaining: " + gameInstance.attemptsRemaining);
