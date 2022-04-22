@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     NumberPicker[] numberPickers = new NumberPicker[4];
     private Group difficultyButtonsGroup, numberPickersGroup;
     int[] userInput, inputResult;
-    int selectedDifficulty, numOfNums = 4, floor = 0, ceiling = 7, currentIndex = 0, totalPlays = 0, wins = 0;
+    int selectedDifficulty, numOfNums = 4, floor = 0, ceiling = 7, attemptsGoal = 10, currentIndex = 0, totalPlays = 0, wins = 0;
     MasterMind gameInstance;
     View numberPickerBorder;
     SharedPreferences totalGamesPlayed, totalGamesWon;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 initGameLayoutButtons();
 //                toggleButtons(0);
                 tryButton.setVisibility(View.VISIBLE);
-                gameInstance.initialize(numOfNums, floor, ceiling);
+                gameInstance.initialize(numOfNums, floor, ceiling, attemptsGoal);
                 currentIndex = 0;
                 break;
         }

@@ -92,6 +92,7 @@
         android:layout_marginStart="196dp"
         android:layout_marginTop="16dp"
         android:text="?"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/text_menu_title"
         app:layout_constraintTop_toTopOf="parent" />
 
