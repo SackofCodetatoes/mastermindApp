@@ -3,8 +3,9 @@ My testing of the project utilizes Android Studio's built in Android Device Emul
 
 == How to run the project ==
 - Install Android Studio Bumblebee | 2021.1.1 Patch 3, following install prompts and make sure to install the AVD (Android Virtual Device) when the checkbox option is available, Android SDK.
+- Install OpenJDK, which should be included on the installation of Android Studio
 - Import the project either by downloading from the repo and selecting the "Open" option on the Android Studio welcome screen or choose the "Get from VCS" and pasting the repo link in the URL with the Version control option set to Git and hit "clone".
-- Once Android Studio boots up, select to trust the project (I have not tried safe mode yet, I assume it does not build and run scripts immediately) and allow time for Android studio to build the project. Progress bar should be on the bottom right of the IDE. This may take some time on the first launch of the project in Android Studio.
+- Once Android Studio boots up, choose to "Trust Project" or "Run in safe Mode" (I believe the difference is "Trust Project" will immediately run the build scripts while Safe Mode wont, allowing the user to look through the code before building the project) and allow time for Android studio to build the project. Progress bar should be on the bottom right of the IDE. This may take some time on the first launch of the project in Android Studio.
 - Once the project has completed it's build, create an Android Virtual Device. The device specifications I used when building and testing the project were:
 
 Device: Nexus_S
@@ -39,7 +40,8 @@ As a hidden testing feature, the user can click on the Mastermind text 25 times 
 
 == Coding the game / Thought Process ==
 - I began my implementation with by programming the base game logic as a Java program (i.e. initialize game variables, generate the random code via http request, game loop, a means to take user input, and provide feedback.)
-- Once I had the base logic completed, I extended the project by using Android Studio to create an Android application. My initial plan was to theme the project around cracking a code to a number lock with the guess feedback in the form of how strong the lock shakes when trying a number combination. I shifted the direction of the project as I felt the lock implementation would require a very well designed, intuitive feedback system which would require a lot of time and testing to get the feel just right.
+- Once I had the base logic completed, I extended the project by using Android Studio to create an Android application. I started developing the project in Android Studio using a blank activity template and proceeded to learn and implement elements to create a UI and means of user input. 
+- My initial plan was to theme the project around cracking a code to a number lock with the guess feedback in the form of how strong the lock shakes when trying a number combination. I shifted the direction of the project as I felt the lock implementation would require a very well designed, intuitive feedback system which would require a lot of time and testing to get the feel just right.
 - Based off testing feedback, I decided to implement features similar to those from Wordle, as Wordle immediately came to mind when working on this project. Given the base requirements gave the user 10 attempts, I utilized a scrollView to log the user guesses and decided to keep the number wheels as a form of input.
 - While testing and playing around with the app, I noticed the default softkeyboard didnt provide customization and I opted to manually create my own keypad so I can handle how which numberwheels would be focused and provide a feedback system similar to Wordle's keyboard.
 - I ran into issues when attempting to add additional input fields dynamically as I am not familiar with all the quirks with programming for Android, so I decided to stay with a 4 digit input with the implementations setup to handle different code lengths and number ranges.
