@@ -38,14 +38,10 @@ As a hidden testing feature, the user can click on the Mastermind text 25 times 
 
 
 == Coding the game / Thought Process ==
-I began my implementation with by programming the base game logic in a separate repo (i.e. initialize game variables, generate the random code via http request, game loop, a means to take user input, and provide feedback.)
-Once I had the base logic completed, I extended the project by using Android Studio to create an Android application. I
-
-
-
-
-
-- Explain how interviewer could run your code
-- document your thought process and or code structure
-describe any creative extensions attempted or implemented
-(BE CLEAR AND UNAMBIGUOUS IN LISTING ALL THE STEPS IN BUILDING, RUNNING, AND PLAYING THE GAME YOU BUILT, make no assumptions about what software the intervieer has and err on side of beign explicit)
+I began my implementation with by programming the base game logic as a Java program (i.e. initialize game variables, generate the random code via http request, game loop, a means to take user input, and provide feedback.)
+Once I had the base logic completed, I extended the project by using Android Studio to create an Android application. My initial plan was to theme the project around cracking a code to a number lock with the guess feedback in the form of how strong the lock shakes when trying a number combination. I shifted the direction of the project as I felt the lock implementation would require a very well designed, intuitive feedback system which would require a lot of time and testing to get the feel just right.
+Based off testing feedback, I decided to implement features similar to those from Wordle, as Wordle immediately came to mind when working on this project. Given the base requirements gave the user 10 attempts, I utilized a scrollView to log the user guesses and decided to keep the number wheels as a form of input.
+While testing and playing around with the app, I noticed the default softkeyboard didnt provide customization and I opted to manually create my own keypad so I can handle how which numberwheels would be focused and provide a feedback system similar to Wordle's keyboard.
+I ran into issues when attempting to add additional input fields dynamically as I am not familiar with all the quirks with programming for Android, so I decided to stay with a 4 digit input with the implementations setup to handle different code lengths and number ranges.
+In terms of how the code is structured, the Main Activity in the app handles the views while a separate MasterMind class is created to handle to game logic.
+- One of the main feedbacks I received when working on the project was the base requirement feedback felt like random guesses and was suggested to create wordle like hints.
