@@ -20,6 +20,7 @@ import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     MasterMind gameInstance;
     View numberPickerBorder;
     SharedPreferences totalGamesPlayed, totalGamesWon;
+    CharSequence toastText;
+    Context context;
+    Toast toast;
 
     /**
      * on create method for main activity. clears starting action bar, disables keyboard input, and initializes game elements
@@ -279,19 +283,29 @@ public class MainActivity extends AppCompatActivity {
         menuText = findViewById(R.id.text_menu_title);
         menuText.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                if(titleClickCounter == 8){
+
+                if(titleClickCounter == 25){
                     Log.d("Reset Stats", String.valueOf(titleClickCounter));
                     totalPlays = 0;
                     wins = 0;
                     saveStats();
                     titleClickCounter = 0;
-                    //pop a toast to tell the player
+                    context = getApplicationContext();
+                    toastText = "Stats have been reset.";
+                    toast = Toast.makeText(context, toastText, Toast.LENGTH_SHORT);
+                    toast.show();
                 }
-                else {
-                    titleClickCounter+=1;
+                else if(titleClickCounter == 15){
+                    context = getApplicationContext();
+                    toastText = "10 more clicks to reset stats!";
+                    toast = Toast.makeText(context, toastText, Toast.LENGTH_LONG);
+                    toast.show();
+
                 }
+                titleClickCounter+=1;
             }
         });
+        menuText.setSoundEffectsEnabled(false);
     }
 
     /**
